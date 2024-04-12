@@ -25,101 +25,31 @@ public class Card : MonoBehaviour
         cost.text = info.cost.ToString();
         description.sprite = info.cardDes;
 
-        player = transform.root.Find("Grid Area/Player Side/Player Icon").GetComponent<Player>();
-
         textDes.text = info.placeHolderDes;
     }
 
-    public void AssignValueToTile(int posX, int posY)
+    public void AssignValueToTile(bool assign, int posX, int posY)
     {
-        if (info.playerBind)
+        for (int i = 0; i < 25; i++)
         {
-            for (int i = 0; i < 25; i++)
+            switch (info.range[i])
             {
-                switch (info.range[i])
-                {
-                    case 1:
-                        CalculateAssignment(i, player.otherSide, true, posX, posY);
-                        break;
-                    case 2:
-                        CalculateAssignment(i, player.mySide, true, posX, posY);
-                        break;
-                    case 3:
-                        CalculateAssignment(i, player.mySide, true, posX, posY);
-                        CalculateAssignment(i, player.otherSide, true, posX, posY);
-                        break;
-                }
-            }
-        }
-        else
-        {
-            for (int i = 0; i < 25; i++)
-            {
-                switch (info.range[i])
-                {
-                    case 1:
-                        CalculateAssignment(i, player.otherSide, true, posX, posY);
-                        break;
-                    case 2:
-                        CalculateAssignment(i, player.mySide, true, posX, posY);
-                        break;
-                    case 3:
-                        CalculateAssignment(i, player.mySide, true, posX, posY);
-                        CalculateAssignment(i, player.otherSide, true, posX, posY);
-                        break;
-                }
+                case 1:
+                    CalculateAssignment(i, player.otherSide, assign, posX, posY);
+                    break;
+                case 2:
+                    CalculateAssignment(i, player.mySide, assign, posX, posY);
+                    break;
+                case 3:
+                    CalculateAssignment(i, player.mySide, assign, posX, posY);
+                    CalculateAssignment(i, player.otherSide, assign, posX, posY);
+                    break;
             }
         }
 
         // Update visual
-        player.mySide.UpdateGridOnCardPlay(true);
-        player.otherSide.UpdateGridOnCardPlay(true);
-    }
-
-    public void UnassignValueToTile(int posX, int posY)
-    {
-        if (info.playerBind)
-        {
-            for (int i = 0; i < 25; i++)
-            {
-                switch (info.range[i])
-                {
-                    case 1:
-                        CalculateAssignment(i, player.otherSide, false, posX, posY);
-                        break;
-                    case 2:
-                        CalculateAssignment(i, player.mySide, false, posX, posY);
-                        break;
-                    case 3:
-                        CalculateAssignment(i, player.mySide, false, posX, posY);
-                        CalculateAssignment(i, player.otherSide, false, posX, posY);
-                        break;
-                }
-            }
-        }
-        else
-        {
-            for (int i = 0; i < 25; i++)
-            {
-                switch (info.range[i])
-                {
-                    case 1:
-                        CalculateAssignment(i, player.otherSide, false, posX, posY);
-                        break;
-                    case 2:
-                        CalculateAssignment(i, player.mySide, false, posX, posY);
-                        break;
-                    case 3:
-                        CalculateAssignment(i, player.mySide, false, posX, posY);
-                        CalculateAssignment(i, player.otherSide, false, posX, posY);
-                        break;
-                }
-            }
-        }
-
-        // Update visual
-        player.mySide.UpdateGridOnCardPlay(false);
-        player.otherSide.UpdateGridOnCardPlay(false);
+        player.mySide.UpdateGridOnCardPlay(assign);
+        player.otherSide.UpdateGridOnCardPlay(assign);
     }
 
     public int TranslateCardToGridX(int index, GridMap map, bool playerBind, int x) // x = player.GetPosX()

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,14 +22,21 @@ public class Character : MonoBehaviour
         int offsetX = (mySide.Width % 2 == 0) ? 50 : 0;
         int offsetY = (mySide.Height % 2 == 0) ? 50 : 0;
         offset = new Vector3(offsetX, offsetY, 0);
+
+        DropZone.OnCardDrop += UpdateRaycastOnCardDrop;
     }
-    
-    private void Update()
+
+    private void OnDestroy()
+    {
+        DropZone.OnCardDrop -= UpdateRaycastOnCardDrop;
+    }
+
+    private void UpdateRaycastOnCardDrop()
     {
         characterIcon.raycastTarget = !CardMouseEvent.isDropped;
     }
 
-    public void setGrid()
+    public void SetGrid()
     {
         mySide = transform.root.Find("Grid Area/Enemy Side/Enemy Grid").GetComponent<GridMap>();
         otherSide = transform.root.Find("Grid Area/Player Side/Player Grid").GetComponent<GridMap>();
@@ -70,7 +78,7 @@ public class Character : MonoBehaviour
         int y = GetPosY();
         mySide.grid[x, y].Occupied = false;
     }
-    public void OccupyAt(int newPosition)
+    public void OccupyAt(int newPosition, bool spawn = false)
     {
         position = newPosition;
         int x = GetPosX() - (mySide.Width / 2);
@@ -78,17 +86,37 @@ public class Character : MonoBehaviour
         mySide.grid[GetPosX(), GetPosY()].Occupied = true;
 
         Vector3 move = new Vector3(x*100, y*100) + offset;
-        transform.SetLocalPositionAndRotation(move, Quaternion.identity);
+        StartCoroutine(RunAnimation(move, spawn));
+    }
+
+    public IEnumerator RunAnimation(Vector3 endPos, bool spawn = false)
+    {
+        yield return null;
+        animator.SetBool("Idle", false);
+        float duration = 2f;
+        float tElapsed = 0;
+        float p;
+        Vector3 startPos = transform.localPosition;
+        while (tElapsed < duration)
+        {
+            tElapsed += Time.deltaTime;
+            p = tElapsed / duration;
+            Vector3 move = Vector3.Lerp(startPos, endPos, p);
+            transform.SetLocalPositionAndRotation(move, Quaternion.identity);
+            if (!spawn) yield return null;
+        }
+        animator.SetBool("Idle", true);
+
     }
 
     public bool IsDead => hp <= 0;
 
-    public virtual int GetMaxStat(string statName)
+    public virtual int GetMaxStat(StatBar.StatType statType)
     {
         return hp;
     }
 
-    public virtual int GetCurrentStat(string statName)
+    public virtual int GetCurrentStat(StatBar.StatType statType)
     {
         return hp;
     }

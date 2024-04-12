@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,19 +6,20 @@ using UnityEngine;
 public class CombatManager : MonoBehaviour
 {
     public static CombatManager Instance;
+
     public static int turn = 1;
     public Board board;
     public HandPanel handPanel;
     public DropZone dropZone;
     public CancelPanel cancelPanel;
-    public StatBar hpBar;
-    public StatBar manaBar;
     public Player player;
     public SpawnArea enemySpawner;
     public GridMap playerGrid;
     public GridMap enemyGrid;
-
     public LevelLoader loader;
+
+    public CombatState state = CombatState.YourTurn;
+    public static event Action<CombatState> OnCombatStateChange;
 
     private void Awake()
     {
@@ -34,6 +36,25 @@ public class CombatManager : MonoBehaviour
         {
             handPanel.Display(i);
         }
+    }
+
+
+    public void UpdateCombatState(CombatState newState)
+    {
+        state = newState;
+        switch (newState)
+        {
+            case CombatState.NewGame:
+                break;
+            case CombatState.YourTurn:
+                break;
+            case CombatState.EnemyTurn:
+                break;
+            case CombatState.End:
+                break;
+        }
+
+        OnCombatStateChange?.Invoke(newState);
     }
 
     public void OnEndTurn()
@@ -161,9 +182,17 @@ public class CombatManager : MonoBehaviour
             player.UseMana(dropZone.card.info.cost);
 
             // Refresh tile and grid + remove card from hand + add to discard pile
-            dropZone.Cancel();
+            dropZone.ReturnCardToHand();
             handPanel.Play(handIndex);
             board.Discard(handIndex);
         }
+    }
+
+    public enum CombatState
+    {
+        NewGame,
+        YourTurn,
+        EnemyTurn,
+        End
     }
 }

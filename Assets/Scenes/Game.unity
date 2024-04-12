@@ -810,7 +810,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character: {fileID: 1463959677}
-  statName: HP
+  statName: 0
   container: {fileID: 4386442497342267434, guid: 745d6a10d05e545449730b9424795891, type: 3}
 --- !u!1 &631315058
 GameObject:
@@ -823,6 +823,7 @@ GameObject:
   - component: {fileID: 631315059}
   - component: {fileID: 631315061}
   - component: {fileID: 631315060}
+  - component: {fileID: 631315062}
   m_Layer: 0
   m_Name: Grass
   m_TagString: Untagged
@@ -1604,6 +1605,27 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!95 &631315062
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 631315058}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b88725a66c4b3404999cfdf79f5ab988, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!224 &704412127 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4535371500675694076, guid: 45ff081fc2838ee458c481f6ff196d32, type: 3}
@@ -2160,7 +2182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character: {fileID: 1463959677}
-  statName: Mana
+  statName: 1
   container: {fileID: 8522495345261125245, guid: 91007ac90fcb17f43a42bcbb54bd1ba1, type: 3}
 --- !u!1 &1295279413
 GameObject:
@@ -2172,6 +2194,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1295279415}
   - component: {fileID: 1295279414}
+  - component: {fileID: 1295279416}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -2209,6 +2232,27 @@ Transform:
   - {fileID: 631315059}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1295279416
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1295279413}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a1dd71d57a9bd9a47be3d770927433ef, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1353854095
 GameObject:
   m_ObjectHideFlags: 0
@@ -12467,7 +12511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpBar: {fileID: 585956325}
-  hp: 5
+  hp: 2
   bonusAtk: 0
   position: 0
   characterIcon: {fileID: 1463959675}
@@ -12513,6 +12557,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 301312543972176903, guid: f1df368cfdd0b2649b6cd0d69a34df68, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 301312543972176903, guid: f1df368cfdd0b2649b6cd0d69a34df68, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 301312543972176903, guid: f1df368cfdd0b2649b6cd0d69a34df68, type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 301312543972176903, guid: f1df368cfdd0b2649b6cd0d69a34df68, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2823522625190010075, guid: f1df368cfdd0b2649b6cd0d69a34df68, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -13259,13 +13319,12 @@ MonoBehaviour:
   handPanel: {fileID: 199788658}
   dropZone: {fileID: 6194353121417318066}
   cancelPanel: {fileID: 2144324465}
-  hpBar: {fileID: 585956325}
-  manaBar: {fileID: 1102900451}
   player: {fileID: 1463959677}
   enemySpawner: {fileID: 156788434}
   playerGrid: {fileID: 393278612}
   enemyGrid: {fileID: 128159451}
   loader: {fileID: 483441866}
+  state: 0
 --- !u!224 &2051266520 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4535371500675694076, guid: 45ff081fc2838ee458c481f6ff196d32, type: 3}
@@ -13437,7 +13496,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4842d095118f7a34bb5be93745a8afc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropZone: {fileID: 6194353121417318066}
   panel: {fileID: 2144324463}
   darken: {r: 0, g: 0, b: 0, a: 0.6039216}
 --- !u!1001 &1384296131162283862

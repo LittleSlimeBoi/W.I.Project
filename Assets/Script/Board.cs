@@ -4,11 +4,25 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
+    public static Board Instance { get; private set; }
+
     public List<CardInfo> deck = new();
     [HideInInspector] public List<CardInfo> drawPile = new();
     [HideInInspector] public List<CardInfo> discardPile = new();
     [HideInInspector] public List<CardInfo> hand = new();
     [HideInInspector] public int handSize = 7;
+
+    private void Awake()
+    {
+        if(Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     // Add card to deck as reward/ Add temporary card to draw pile and discard pile
     public void AddCard(List<CardInfo> list, CardInfo card, int amount = 1)

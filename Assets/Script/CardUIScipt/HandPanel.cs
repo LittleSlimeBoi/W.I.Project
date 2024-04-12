@@ -8,6 +8,16 @@ public class HandPanel : MonoBehaviour
     public Card cardPrefab;
     public Transform handContent;
 
+    private void Start()
+    {
+        DropZone.OnCardDrop += UpdateRaycastOnCardDrop;
+    }
+
+    private void OnDestroy()
+    {
+        DropZone.OnCardDrop -= UpdateRaycastOnCardDrop;
+    }
+
     // Display drawed cards
     public void Display(int index)
     {
@@ -44,7 +54,7 @@ public class HandPanel : MonoBehaviour
     }
 
     // Allow hand panel to work with cancel panel
-    public void UpdateRaycastOnDrop()
+    public void UpdateRaycastOnCardDrop()
     {
         handContent.gameObject.GetComponent<CanvasGroup>().blocksRaycasts = !(CardMouseEvent.isDropped);
     }

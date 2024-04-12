@@ -12,9 +12,8 @@ public class SpawnArea : MonoBehaviour
 
     private void Start()
     {
-        AddToSpawnList(dataBase.monsterDataBase[0], 4);
-        AddToSpawnList(dataBase.monsterDataBase[1], 1);
         AddToSpawnList(dataBase.monsterDataBase[0], 3);
+        AddToSpawnList(dataBase.monsterDataBase[1], 1);
         AddToSpawnList(dataBase.monsterDataBase[0], 2);
         AddToSpawnList(dataBase.monsterDataBase[1], 2);
 
@@ -39,9 +38,9 @@ public class SpawnArea : MonoBehaviour
             GameObject monsterObj = Instantiate(spawnList[0].gameObject);
             monsterObj.transform.SetParent(this.transform);
             Monster slot = monsterObj.GetComponent<Monster>();
-            slot.setGrid();
-            slot.OccupyAt(gridMap.GetRandomPos());
+            slot.SetGrid();
             slot.InitMonster(slot.info, monsterList.Count);
+            slot.OccupyAt(gridMap.GetRandomPos(), true);
 
             monsterList.Add(slot);
             spawnList.RemoveAt(0);

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -7,7 +8,19 @@ public class DropZone : MonoBehaviour, IDropHandler
     [HideInInspector] public Card card;
     public Image box;
     public Color boxColor;
-    private int playerPosX, playerPosY;
+    private int playerCurrentX, playerCurrentY;
+
+    public static event Action OnCardDrop;
+
+    private void Start()
+    {
+        CancelPanel.OnCancel += ReturnCardToHand;
+    }
+
+    private void OnDestroy()
+    {
+        CancelPanel.OnCancel -= ReturnCardToHand;
+    }
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -16,15 +29,15 @@ public class DropZone : MonoBehaviour, IDropHandler
             card = eventData.pointerDrag.transform.GetComponent<Card>();
             if (card.mouseEvent.CanDrag())
             {
-                playerPosX = Card.player.GetPosX();
-                playerPosY = Card.player.GetPosY();
+                playerCurrentX = Card.player.GetPosX();
+                playerCurrentY = Card.player.GetPosY();
                 CardMouseEvent.isDropped = true;
 
                 card.mouseEvent.parentReturnTo = transform;
                 card.transform.localScale = new Vector2(2f, 2f);
 
-                transform.root.Find("Hand Panel").GetComponent<HandPanel>().UpdateRaycastOnDrop();
-                card.AssignValueToTile(playerPosX, playerPosY);
+                card.AssignValueToTile(true, playerCurrentX, playerCurrentY);
+                OnCardDrop?.Invoke();
             }
             else
             {
@@ -33,7 +46,7 @@ public class DropZone : MonoBehaviour, IDropHandler
         }
     }
 
-    public void Cancel()
+    public void ReturnCardToHand()
     {
         CardMouseEvent.isDropped = false;
         card.transform.localScale = new Vector2(1.2f, 1.2f);
@@ -43,10 +56,11 @@ public class DropZone : MonoBehaviour, IDropHandler
             card.mouseEvent.ReturnToHand();
         }
 
-        transform.root.Find("Hand Panel").GetComponent<HandPanel>().UpdateRaycastOnDrop();
-        card.UnassignValueToTile(playerPosX, playerPosY);
+        card.AssignValueToTile(false, playerCurrentX, playerCurrentY);
         Card.player.mySide.CancelSelectedTile();
         Card.player.otherSide.CancelSelectedTile();
+
+        OnCardDrop?.Invoke();
 
         card = null;
     }

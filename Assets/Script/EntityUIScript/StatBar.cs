@@ -3,7 +3,7 @@ using UnityEngine;
 public class StatBar : MonoBehaviour
 {
     public Character character;
-    [SerializeField] private string statName;
+    [SerializeField] private StatType statName;
     [SerializeField] private StatIcon container;
     private StatIcon[] statBar;
     private int maxStat, currentStat;
@@ -39,5 +39,11 @@ public class StatBar : MonoBehaviour
                 statBar[i].Empty();
             }
         }
+    }
+
+    public enum StatType
+    {
+        HP,
+        Mana
     }
 }

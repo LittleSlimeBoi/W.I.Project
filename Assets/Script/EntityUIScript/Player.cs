@@ -21,6 +21,8 @@ public class Player : Character
         otherSide = swap;
         */
         position = mySide.anchorPosX + mySide.anchorPosY * mySide.Width;
+        Card.player = this;
+
     }
 
     public void UseMana(int cost)
@@ -35,13 +37,13 @@ public class Player : Character
         manaBar.UpdateStatBar();
     }
 
-    public override int GetMaxStat(string statName)
+    public override int GetMaxStat(StatBar.StatType statType)
     {
-        return (statName == "HP") ? maxHP : maxMana;
+        return (statType == StatBar.StatType.HP) ? maxHP : maxMana;
     }
 
-    public override int GetCurrentStat(string statName)
+    public override int GetCurrentStat(StatBar.StatType statType)
     {
-        return (statName == "HP") ? hp : mana;
+        return (statType == StatBar.StatType.HP) ? hp : mana;
     }
 }

@@ -70,12 +70,12 @@ public class Monster : Character
         this.fieldIndex = fieldIndex;
     }
 
-    public override int GetMaxStat(string statName)
+    public override int GetMaxStat(StatBar.StatType statType)
     {
         return info.maxHP;
     }
 
-    public override int GetCurrentStat(string statName)
+    public override int GetCurrentStat(StatBar.StatType statType)
     {
         return hp;
     }

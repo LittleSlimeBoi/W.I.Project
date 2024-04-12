@@ -83,7 +83,9 @@ public class CardMouseEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public bool CanDrag()
     {
-        return Card.player.mana - gameObject.GetComponent<Card>().info.cost >= 0;
+        bool con1 = Card.player.mana - gameObject.GetComponent<Card>().info.cost >= 0;
+        //bool con2 = CombatManager.Instance.state == CombatManager.CombatState.YourTurn;
+        return con1;// && con2;
     }
 
     public void ReturnToHand()
