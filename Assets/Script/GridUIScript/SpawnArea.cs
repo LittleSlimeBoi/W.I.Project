@@ -67,6 +67,14 @@ public class SpawnArea : MonoBehaviour
         }
     }
 
+    public void AllMonstersCancelAttack()
+    {
+        foreach (Monster monster in monsterList)
+        {
+            monster.CancelAttack();
+        }
+    }
+
     public bool NoMoreMonster()
     {
         return monsterList.Count == 0;

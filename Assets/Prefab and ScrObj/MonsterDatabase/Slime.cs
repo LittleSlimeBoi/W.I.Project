@@ -6,11 +6,11 @@ public class Slime : Monster
 
         if (CombatManager.turn % 3 == 0)
         {
-            AttackPattern.PlusAtack(atkX, atkY, otherSide, damage, 1);
+            AttackPattern.PlusAtack(atkX, atkY, this, damage, 1);
         }
         else
         {
-            AttackPattern.CellAtack(atkX, atkY, otherSide, damage);
+            AttackPattern.CellAtack(atkX, atkY, this, damage);
         }
     }
     public override void CancelAttack()
@@ -19,11 +19,11 @@ public class Slime : Monster
 
         if (CombatManager.turn % 3 == 0)
         {
-            AttackPattern.CancelPlusAtack(atkX, atkY, otherSide, damage, 1);
+            AttackPattern.CancelPlusAtack(atkX, atkY, this, damage, 1);
         }
         else
         {
-            AttackPattern.CancelCellAtack(atkX, atkY, otherSide, damage);
+            AttackPattern.CancelCellAtack(atkX, atkY, this, damage);
         }
     }
 }

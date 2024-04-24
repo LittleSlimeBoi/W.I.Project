@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,7 @@ public class Monster : Character
     public MonsterInfo info;
     protected int damage;
     protected int atkX, atkY;
+    public List<GridTile> atkArea;
 
     [HideInInspector] public int fieldIndex;
 

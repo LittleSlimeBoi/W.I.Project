@@ -7,7 +7,7 @@ public class CombatManager : MonoBehaviour
 {
     public static CombatManager Instance;
 
-    public static int turn = 1;
+    public static int turn = 0;
     public Board board;
     public HandPanel handPanel;
     public DropZone dropZone;
@@ -75,7 +75,6 @@ public class CombatManager : MonoBehaviour
         foreach(GridTile tile in playerGrid.grid)
         {
             tile.DamageIncoming = 0;
-            tile.Targeted = 0;
             tile.UpdateTileOnNewTurn();
         }
 
@@ -92,6 +91,7 @@ public class CombatManager : MonoBehaviour
 
     public void NewTurn()
     {
+        if (turn != 0) enemySpawner.AllMonstersCancelAttack();
         turn++;
         // Refill player's mana
         player.RefillMana();

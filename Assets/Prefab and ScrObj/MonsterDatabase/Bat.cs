@@ -6,11 +6,11 @@ public class Bat : Monster
 
         if (CombatManager.turn % 3 == 0)
         {
-            AttackPattern.CrossAtack(atkX, atkY, otherSide, damage, 1);
+            AttackPattern.CrossAtack(atkX, atkY, this, damage, 1);
         }
         else
         {
-            AttackPattern.TriangleAtack(atkX, atkY, otherSide, damage, 1);
+            AttackPattern.TriangleAtack(atkX, atkY, this, damage, 1);
         }
     }
     public override void CancelAttack()
@@ -19,11 +19,11 @@ public class Bat : Monster
 
         if (CombatManager.turn % 3 == 0)
         {
-            AttackPattern.CancelCrossAtack(atkX, atkY, otherSide, damage, 1);
+            AttackPattern.CancelCrossAtack(atkX, atkY, this, damage, 1);
         }
         else
         {
-            AttackPattern.CancelTriangleAtack(atkX, atkY, otherSide, damage, 1);
+            AttackPattern.CancelTriangleAtack(atkX, atkY, this, damage, 1);
         }
     }
 }
