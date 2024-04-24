@@ -19,7 +19,6 @@ public class GridTile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private bool isWalkable = true;
     private bool isOccupied;
     private bool isFragile;
-    private bool isHighlight;
     private bool isAnchor;
     private bool isSelectable;
     private bool isSelected;
@@ -35,14 +34,17 @@ public class GridTile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        isHighlight = true;
-        selectHighlight.SetActive(isHighlight && (!CardMouseEvent.isDropped || isSelectable));
+        ActivateSelectHighlight(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        isHighlight = false;
-        selectHighlight.SetActive(isHighlight);
+        ActivateSelectHighlight(false);
+    }
+
+    public void ActivateSelectHighlight(bool isHighlight)
+    {
+        selectHighlight.SetActive(isHighlight && (!CardMouseEvent.isDropped || isSelectable));
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -82,7 +84,7 @@ public class GridTile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         anchorHighlight.SetActive(isAnchor);
     }
 
-    public void colorTile(int x, int y)
+    public void ColorTile(int x, int y)
     {
         if ((x + y) % 2 == 0) tileImage.color = baseColor;
         else tileImage.color = offsetColor;

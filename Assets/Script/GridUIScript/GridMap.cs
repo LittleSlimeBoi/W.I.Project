@@ -34,7 +34,7 @@ public class GridMap: MonoBehaviour
             {
                 grid[i, j] = Instantiate(tile);
                 grid[i, j].gameObject.transform.SetParent(this.transform);
-                grid[i, j].colorTile(i, j);
+                grid[i, j].ColorTile(i, j);
                 grid[i, j].name = $"{s}-GridTile {i} {j}";
             }
         }
