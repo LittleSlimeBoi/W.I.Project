@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class GridMap: MonoBehaviour
 {
@@ -36,6 +35,7 @@ public class GridMap: MonoBehaviour
                 grid[i, j].gameObject.transform.SetParent(this.transform);
                 grid[i, j].ColorTile(i, j);
                 grid[i, j].name = $"{s}-GridTile {i} {j}";
+                grid[i, j].tileIndex = (j * height) + i;
             }
         }
     }
@@ -72,9 +72,18 @@ public class GridMap: MonoBehaviour
         }
     }
 
+
+    public bool IsValidX(int x)
+    {
+        return (x >= 0) && (x < width);
+    }
+    public bool IsValidY(int y)
+    {
+        return (y >= 0) && (y < height);
+    }
     public bool IsValidPosition(int x, int y)
     {
-        return (x >= 0) && (x < width) && (y >= 0) && (y < height);
+        return IsValidX(x) && IsValidY(y);
     }
 
     public int GetRandomPos()

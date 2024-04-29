@@ -14,6 +14,11 @@ public class MonsterMouseEvent : MonoBehaviour, IPointerEnterHandler, IPointerEx
         {
             tile.ActivateSelectHighlight(true);
         }
+
+        foreach (GridTile tile in gameObject.GetComponent<Monster>().moveArea)
+        {
+            tile.ActivateSelectHighlight(true);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -21,6 +26,11 @@ public class MonsterMouseEvent : MonoBehaviour, IPointerEnterHandler, IPointerEx
         gameObject.GetComponent<Monster>().hpBar.gameObject.SetActive(false);
 
         foreach (GridTile tile in gameObject.GetComponent<Monster>().atkArea)
+        {
+            tile.ActivateSelectHighlight(false);
+        }
+
+        foreach (GridTile tile in gameObject.GetComponent<Monster>().moveArea)
         {
             tile.ActivateSelectHighlight(false);
         }

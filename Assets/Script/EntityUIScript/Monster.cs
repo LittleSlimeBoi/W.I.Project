@@ -8,6 +8,7 @@ public class Monster : Character
     protected int damage;
     protected int atkX, atkY;
     public List<GridTile> atkArea;
+    public List<GridTile> moveArea;
 
     [HideInInspector] public int fieldIndex;
 
@@ -20,31 +21,39 @@ public class Monster : Character
         Destroy(gameObject);
     }
 
-    // Move at each turn's start: Select a random Tile in move range that is safe, if cant move then stay in the same tile
-    public virtual void Move()
+    // Prepare to move at turn's start: Add all tiles in monster's moveRange to moveArea
+    public void PrepareToMove()
     {
-        int x, y, newPosition, safeBlock = 0;
-        do
+        for(int i = -info.moveRange; i <= info.moveRange; i++)
         {
-            int xIncrement = Random.Range(-info.moveRange, info.moveRange + 1);
-            int yIncrement = Random.Range(Mathf.Abs(xIncrement) - info.moveRange, info.moveRange - Mathf.Abs(xIncrement) + 1);
-            int tempX = GetPosX() + xIncrement;
-            int tempY = GetPosY() + yIncrement;
+            int x = GetPosX() + i;
+            if (!mySide.IsValidX(x)) { continue; }
+            for (int j = Mathf.Abs(i) - info.moveRange; j <= info.moveRange - Mathf.Abs(i); j++)
+            {
+                int y = GetPosY() + j;
+                if (!mySide.IsValidY(y)) { continue; }
 
-            if (tempX < 0) xIncrement = -tempX;
-            else if (tempX >= mySide.Width) xIncrement = mySide.Width - tempX;
-            if (tempY < 0) yIncrement = -tempY;
-            else if (tempY >= mySide.Height) yIncrement = mySide.Height - tempY;
-
-            newPosition = Position + xIncrement + yIncrement * mySide.Width;
-            x = newPosition % mySide.Width;
-            y = newPosition / mySide.Width;
-            safeBlock++;
-            if (!mySide.IsValidPosition(x, y)) continue;
+                // Add condition here
+                moveArea.Add(mySide.grid[x, y]);
+            }
         }
-        while ((!mySide.grid[x, y].Walkable || mySide.grid[x, y].Occupied) && (safeBlock < 50));
-
-        if (safeBlock < 50) MoveTo(newPosition);
+    }
+    // Move at turn's end: Select a random unoccupied tile in moveArea to move into to
+    public void Move()
+    {
+        int newPosition;
+        int r = Random.Range(0, moveArea.Count);
+        while ((!moveArea[r].Walkable || moveArea[r].Occupied) && moveArea.Count != 0)
+        {
+            moveArea.RemoveAt(r);
+            r = Random.Range(0, moveArea.Count);
+        }
+        if (moveArea.Count != 0)
+        {
+            newPosition = moveArea[r].tileIndex;
+            MoveTo(newPosition);
+        }
+        moveArea.Clear();
     }
 
     // Mark attack range

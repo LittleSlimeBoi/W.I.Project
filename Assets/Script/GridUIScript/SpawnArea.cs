@@ -42,6 +42,8 @@ public class SpawnArea : MonoBehaviour
             slot.InitMonster(slot.info, monsterList.Count);
             slot.OccupyAt(gridMap.GetRandomPos(), true);
 
+            slot.PrepareToMove();
+
             monsterList.Add(slot);
             spawnList.RemoveAt(0);
         }
@@ -64,6 +66,8 @@ public class SpawnArea : MonoBehaviour
         {
             monster.Move();
             monster.Attack();
+
+            monster.PrepareToMove();
         }
     }
 

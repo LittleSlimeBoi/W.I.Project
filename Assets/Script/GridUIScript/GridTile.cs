@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class GridTile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler
 {
     [HideInInspector] public string tileName;
+    [HideInInspector] public int tileIndex;
     [SerializeField] private Color baseColor, offsetColor;
     [SerializeField] protected Image tileImage;
     [SerializeField] private GameObject selectHighlight;
