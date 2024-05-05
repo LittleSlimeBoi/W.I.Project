@@ -53,6 +53,7 @@ public class Character : MonoBehaviour
     {
         hp -= damage;
         hpBar.UpdateStatBar();
+        if (damage > 0) StartCoroutine(HurtAnimation());
     }
 
     public int Position { get => position; set => position = value; }
@@ -91,7 +92,6 @@ public class Character : MonoBehaviour
 
     public IEnumerator RunAnimation(Vector3 endPos, bool spawn = false)
     {
-        yield return null;
         animator.SetBool("Idle", false);
         float duration = 2f;
         float tElapsed = 0;
@@ -106,7 +106,31 @@ public class Character : MonoBehaviour
             if (!spawn) yield return null;
         }
         animator.SetBool("Idle", true);
-
+    }
+    
+    public IEnumerator HurtAnimation()
+    {
+        animator.SetBool("Hurt", true);
+        float duration = 1f;
+        float tElapsed = 0;
+        float p;
+        Vector3 A = transform.localPosition - new Vector3(10, 0);
+        Vector3 B = transform.localPosition + new Vector3(10, 0);
+        Vector3 startPos = transform.localPosition;
+        while (tElapsed < duration)
+        {
+            tElapsed += Time.deltaTime;
+            if(tElapsed < 0.6f)
+            {
+                p = 0.5f + Mathf.Sin(Mathf.PI / 2 * tElapsed / 0.1f) / 2;
+                Vector3 move = Vector3.Lerp(A, B, p);
+                transform.SetLocalPositionAndRotation(move, Quaternion.identity);
+                yield return null;
+            }
+            yield return null;
+        }
+        transform.SetLocalPositionAndRotation(startPos, Quaternion.identity);
+        animator.SetBool("Hurt", false);
     }
 
     public bool IsDead => hp <= 0;

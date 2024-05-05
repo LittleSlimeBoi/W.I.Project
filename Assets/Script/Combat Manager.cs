@@ -145,7 +145,6 @@ public class CombatManager : MonoBehaviour
                 }
                 else // AOE attack
                 {
-                    int gridIndex = 0;
                     foreach(GridTile tile in enemyGrid.grid)
                     {
                         if(tile.Selectable && tile.Occupied)
@@ -153,7 +152,7 @@ public class CombatManager : MonoBehaviour
                             for (int i = 1; i < enemySpawner.transform.childCount; i++)
                             {
                                 Monster temp = enemySpawner.transform.GetChild(i).GetComponent<Monster>();
-                                if (temp.Position == (gridIndex / enemyGrid.Height) + (gridIndex % enemyGrid.Height * enemyGrid.Width))
+                                if (temp.Position == tile.tileIndex)
                                 {
                                     temp.TakeDamge(dropZone.card.info.atkPower + player.bonusAtk);
 
@@ -167,7 +166,6 @@ public class CombatManager : MonoBehaviour
                                 }
                             }
                         }
-                        gridIndex++;
                     }
                 }
             }
