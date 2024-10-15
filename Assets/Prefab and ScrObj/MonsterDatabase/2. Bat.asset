@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 2. Bat
   m_EditorClassIdentifier: 
   monsterName: Bat
-  maxHP: 2
+  maxHP: 1
   baseAtk: 1
   monsterIcon: {fileID: 21300000, guid: 370ee9cbbe2183543b39d3bd90976a82, type: 3}
   monsterDes: {fileID: 0}

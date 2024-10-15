@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character: {fileID: 2513554612950014929}
-  statName: 
+  statName: 0
   container: {fileID: 4386442497342267434, guid: 745d6a10d05e545449730b9424795891, type: 3}
 --- !u!114 &382237509657231547
 MonoBehaviour:
@@ -264,6 +264,8 @@ MonoBehaviour:
   otherSide: {fileID: 0}
   animator: {fileID: 3886568243663604274}
   info: {fileID: 11400000, guid: f0e131272abe74641a78a84650b40893, type: 2}
+  atkArea: []
+  moveArea: []
   fieldIndex: 0
 --- !u!114 &5209833111045446925
 MonoBehaviour:

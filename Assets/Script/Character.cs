@@ -8,6 +8,8 @@ public class Character : MonoBehaviour
     public int hp;
     public int bonusAtk = 0;
     public int position;
+    private float runAnimDur = 0.5f;
+    private float hurtAnimDur = 0.2f;
     public Image characterIcon;
     public Image characterDes;
     public GridMap mySide;
@@ -53,7 +55,7 @@ public class Character : MonoBehaviour
     {
         hp -= damage;
         hpBar.UpdateStatBar();
-        if (damage > 0) StartCoroutine(HurtAnimation());
+        if (damage > 0) StartCoroutine(HurtAnimation(hurtAnimDur));
     }
 
     public int Position { get => position; set => position = value; }
@@ -87,49 +89,47 @@ public class Character : MonoBehaviour
         mySide.grid[GetPosX(), GetPosY()].Occupied = true;
 
         Vector3 move = new Vector3(x*100, y*100) + offset;
-        StartCoroutine(RunAnimation(move, spawn));
+        StartCoroutine(RunAnimation(move, runAnimDur, spawn));
     }
 
-    public IEnumerator RunAnimation(Vector3 endPos, bool spawn = false)
+    public IEnumerator RunAnimation(Vector3 endPos, float runAnimDur, bool spawn = false)
     {
         animator.SetBool("Idle", false);
-        float duration = 2f;
         float tElapsed = 0;
         float p;
         Vector3 startPos = transform.localPosition;
-        while (tElapsed < duration)
+        while (tElapsed < runAnimDur)
         {
             tElapsed += Time.deltaTime;
-            p = tElapsed / duration;
+            p = tElapsed / runAnimDur;
             Vector3 move = Vector3.Lerp(startPos, endPos, p);
-            transform.SetLocalPositionAndRotation(move, Quaternion.identity);
+            transform.localPosition = move;
             if (!spawn) yield return null;
         }
         animator.SetBool("Idle", true);
     }
     
-    public IEnumerator HurtAnimation()
+    public IEnumerator HurtAnimation(float hurtAnimDur)
     {
         animator.SetBool("Hurt", true);
-        float duration = 1f;
         float tElapsed = 0;
         float p;
         Vector3 A = transform.localPosition - new Vector3(10, 0);
         Vector3 B = transform.localPosition + new Vector3(10, 0);
         Vector3 startPos = transform.localPosition;
-        while (tElapsed < duration)
+        while (tElapsed < hurtAnimDur)
         {
             tElapsed += Time.deltaTime;
             if(tElapsed < 0.6f)
             {
                 p = 0.5f + Mathf.Sin(Mathf.PI / 2 * tElapsed / 0.1f) / 2;
                 Vector3 move = Vector3.Lerp(A, B, p);
-                transform.SetLocalPositionAndRotation(move, Quaternion.identity);
+                transform.localPosition = move;
                 yield return null;
             }
             yield return null;
         }
-        transform.SetLocalPositionAndRotation(startPos, Quaternion.identity);
+        transform.localPosition = startPos;
         animator.SetBool("Hurt", false);
     }
 

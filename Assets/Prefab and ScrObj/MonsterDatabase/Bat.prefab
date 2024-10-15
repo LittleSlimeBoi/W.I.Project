@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hpBar: {fileID: 7344564875507199849}
-  hp: 3
+  hp: 1
   bonusAtk: 0
   position: 0
   characterIcon: {fileID: 7883606703999959864}
@@ -189,6 +189,8 @@ MonoBehaviour:
   otherSide: {fileID: 0}
   animator: {fileID: 4813030770018091915}
   info: {fileID: 11400000, guid: 2a14923475ecedb4d9274815275ab11c, type: 2}
+  atkArea: []
+  moveArea: []
   fieldIndex: 0
 --- !u!114 &7313385748620576131
 MonoBehaviour:

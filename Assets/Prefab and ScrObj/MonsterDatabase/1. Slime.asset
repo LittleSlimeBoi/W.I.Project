@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 1. Slime
   m_EditorClassIdentifier: 
   monsterName: Slime
-  maxHP: 1
+  maxHP: 2
   baseAtk: 1
   monsterIcon: {fileID: 21300000, guid: 433b9486083e10642bb4287938a4b1b9, type: 3}
   monsterDes: {fileID: 0}
