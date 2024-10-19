@@ -90,4 +90,17 @@ public class GridTile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if ((x + y) % 2 == 0) tileImage.color = baseColor;
         else tileImage.color = offsetColor;
     }
+
+    public void setSize(Vector2 tileSize)
+    {
+        GetComponent<RectTransform>().sizeDelta = tileSize;
+        selectHighlight.GetComponent<RectTransform>().sizeDelta  = tileSize;
+        targetHighlight.GetComponent<RectTransform>().sizeDelta  = tileSize;
+        fragileHighlight.GetComponent<RectTransform>().sizeDelta = tileSize;
+        anchorHighlight.GetComponent<RectTransform>().sizeDelta  = tileSize;
+        darkenHighlight.GetComponent<RectTransform>().sizeDelta  = tileSize;
+        blockHighlight.GetComponent<RectTransform>().sizeDelta   = tileSize;
+        pickedHighlight.GetComponent<RectTransform>().sizeDelta  = tileSize;
+
+    }
 }

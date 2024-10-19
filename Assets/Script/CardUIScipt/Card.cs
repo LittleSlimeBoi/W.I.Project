@@ -9,8 +9,6 @@ public class Card : MonoBehaviour
     [SerializeField] private CardTile[] cardGrid = new CardTile[25];
     [SerializeField] private TextMeshProUGUI cost;
     [SerializeField] private Image description;
-    [SerializeField] private GameObject outline;
-
     [SerializeField] private TextMeshProUGUI textDes;
 
     public CardMouseEvent mouseEvent;
@@ -21,6 +19,7 @@ public class Card : MonoBehaviour
 
     private void Start()
     {
+        transform.localScale = new Vector2(1.2f, 1.2f);
         PaintCardGrid();
         cost.text = info.cost.ToString();
         description.sprite = info.cardDes;

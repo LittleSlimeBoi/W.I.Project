@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GridMap: MonoBehaviour
 {
     public GridTile[,] grid;
-    [SerializeField] private int width, height;
+    [SerializeField] private int width, height, tileSize = 16;
     [SerializeField] private GridTile tile;
     [SerializeField] private string s;
+    [SerializeField] private GridLayoutGroup layoutGroup;
     [HideInInspector] public int anchorPosX, anchorPosY;
     public int selectableTileCount = 0;
     public int selectedX = 0, selectedY = 0;
@@ -25,7 +27,9 @@ public class GridMap: MonoBehaviour
     public void GenerateGrid(int width, int height)
     {
         grid = new GridTile[width, height];
-        this.GetComponent<RectTransform>().sizeDelta = new Vector2(width*100, height*100);
+        this.GetComponent<RectTransform>().sizeDelta = new Vector2(width*tileSize, height*tileSize);
+        Vector2 tile2d = new Vector2(tileSize, tileSize);
+        layoutGroup.cellSize = tile2d;
 
         for (int j = 0; j < height; j++)
         {
@@ -36,6 +40,7 @@ public class GridMap: MonoBehaviour
                 grid[i, j].ColorTile(i, j);
                 grid[i, j].name = $"{s}-GridTile {i} {j}";
                 grid[i, j].tileIndex = (j * height) + i;
+                grid[i, j].setSize(tile2d);
             }
         }
     }

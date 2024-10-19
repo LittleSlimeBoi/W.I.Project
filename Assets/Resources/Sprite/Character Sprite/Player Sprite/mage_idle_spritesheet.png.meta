@@ -34,7 +34,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -71,7 +71,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
+    textureFormat: 4
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -128,8 +128,8 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 100
-        height: 100
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -137,8 +137,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4128fbf6a0276b84f9ac8270579294e1
-      internalID: 1547877600
+      spriteID: 8809062111bd4784a8a3f2b67a8a0faa
+      internalID: -1859379004
       vertices: []
       indices: 
       edges: []
@@ -147,10 +147,10 @@ TextureImporter:
       name: mage_idle_spritesheet_1
       rect:
         serializedVersion: 2
-        x: 100
+        x: 16
         y: 0
-        width: 100
-        height: 100
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,8 +158,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 83867fb5443bb0348b7b2fe920e68254
-      internalID: -1971075770
+      spriteID: afd76aa080ec32646aaaf63d88ca7d8a
+      internalID: -189053876
       vertices: []
       indices: 
       edges: []
@@ -168,10 +168,10 @@ TextureImporter:
       name: mage_idle_spritesheet_2
       rect:
         serializedVersion: 2
-        x: 200
+        x: 32
         y: 0
-        width: 100
-        height: 100
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,8 +179,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 98768e941ba5d804985385409e617fa6
-      internalID: 2085250096
+      spriteID: 47aa89e1ef209f644b613ad59b0c5e89
+      internalID: -1083579113
       vertices: []
       indices: 
       edges: []
@@ -189,10 +189,10 @@ TextureImporter:
       name: mage_idle_spritesheet_3
       rect:
         serializedVersion: 2
-        x: 300
+        x: 48
         y: 0
-        width: 100
-        height: 100
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -200,8 +200,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2a721a065ea834847a4d062e82493423
-      internalID: -443751220
+      spriteID: c34672b6136405a49a023b2256b386c8
+      internalID: 1485603861
       vertices: []
       indices: 
       edges: []
@@ -210,10 +210,10 @@ TextureImporter:
       name: mage_idle_spritesheet_4
       rect:
         serializedVersion: 2
-        x: 400
+        x: 64
         y: 0
-        width: 100
-        height: 100
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -221,8 +221,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c774c9fa50a559449adc648654dfe2f3
-      internalID: 1720808873
+      spriteID: 43ed4c0769cb7534fbcf9db24235f167
+      internalID: 1880496661
       vertices: []
       indices: 
       edges: []
@@ -231,10 +231,10 @@ TextureImporter:
       name: mage_idle_spritesheet_5
       rect:
         serializedVersion: 2
-        x: 500
+        x: 80
         y: 0
-        width: 100
-        height: 100
+        width: 16
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -242,8 +242,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 159d862cf8e151d44a175764af6df59d
-      internalID: 1180180492
+      spriteID: 3ff51db866246bb4984b97bb7e14e75a
+      internalID: -176435069
       vertices: []
       indices: 
       edges: []
@@ -259,12 +259,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      mage_idle_spritesheet_0: 1547877600
-      mage_idle_spritesheet_1: -1971075770
-      mage_idle_spritesheet_2: 2085250096
-      mage_idle_spritesheet_3: -443751220
-      mage_idle_spritesheet_4: 1720808873
-      mage_idle_spritesheet_5: 1180180492
+      mage_idle_spritesheet_0: -1859379004
+      mage_idle_spritesheet_1: -189053876
+      mage_idle_spritesheet_2: -1083579113
+      mage_idle_spritesheet_3: 1485603861
+      mage_idle_spritesheet_4: 1880496661
+      mage_idle_spritesheet_5: -176435069
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
