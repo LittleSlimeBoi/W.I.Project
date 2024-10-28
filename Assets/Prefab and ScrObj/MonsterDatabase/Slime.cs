@@ -1,4 +1,4 @@
-public class Slime : Monster
+public class Slime : MonsterCombatManager
 {
     public override void Attack()
     {

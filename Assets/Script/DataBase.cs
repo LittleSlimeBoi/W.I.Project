@@ -5,5 +5,5 @@ using UnityEngine;
 public class DataBase : MonoBehaviour
 {
     public List<CardInfo> cardDataBase = new();
-    public List<Monster> monsterDataBase = new();
+    public List<MonsterCombatManager> monsterDataBase = new();
 }

@@ -1,4 +1,4 @@
-public class Bat : Monster
+public class Bat : MonsterCombatManager
 {
     public override void Attack()
     {
