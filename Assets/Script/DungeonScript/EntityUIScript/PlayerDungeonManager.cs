@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerDungeonManager : CharacterDungeonManager
@@ -18,7 +16,12 @@ public class PlayerDungeonManager : CharacterDungeonManager
         float y = Input.GetAxisRaw("Vertical");
         Vector3 move = transform.right * x + transform.up * y;
 
-        if(x > 0)
+        if(x == 0 && y == 0)
+            animator.SetBool("Idle", true);
+        else
+            animator.SetBool("Idle", false);
+
+        if (x > 0)
         {
             transform.localScale = Vector3.one;
         }
