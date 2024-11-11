@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class StatBar : MonoBehaviour
 {
+    public enum StatType
+    {
+        HP,
+        Mana
+    }
+
     public CharacterCombatManager character;
     [SerializeField] private StatType statName;
     [SerializeField] private StatIcon container;
@@ -41,9 +47,4 @@ public class StatBar : MonoBehaviour
         }
     }
 
-    public enum StatType
-    {
-        HP,
-        Mana
-    }
 }

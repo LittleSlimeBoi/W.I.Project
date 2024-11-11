@@ -1,10 +1,19 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class CombatManager : MonoBehaviour
 {
+    public enum CombatState
+    {
+        NewGame,
+        YourTurn,
+        EnemyTurn,
+        End
+    }
+
     public static CombatManager Instance;
 
     public static int turn = 0;
@@ -16,6 +25,7 @@ public class CombatManager : MonoBehaviour
     public SpawnArea enemySpawner;
     public GridMap playerGrid;
     public GridMap enemyGrid;
+    public Button endturnButton;
     public LevelLoader loader;
 
     public CombatState state = CombatState.YourTurn;
@@ -59,6 +69,7 @@ public class CombatManager : MonoBehaviour
 
     public void OnEndTurn()
     {
+        endturnButton.interactable = false;
         // Clear hand
         board.Flush();
         handPanel.FlushHand();
@@ -74,7 +85,6 @@ public class CombatManager : MonoBehaviour
         // Refresh player grid
         foreach(GridTile tile in playerGrid.grid)
         {
-            tile.DamageIncoming = 0;
             tile.UpdateTileOnNewTurn();
         }
 
@@ -109,6 +119,10 @@ public class CombatManager : MonoBehaviour
         enemySpawner.AllMonstersAction();
         // Update tile
         playerGrid.UpdateGridOnNewTurn();
+
+
+
+        StartCoroutine(EnableEndButton(1.2f));
     }
 
     public void UseCard()
@@ -186,11 +200,10 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public enum CombatState
+    public IEnumerator EnableEndButton(float waitDuration)
     {
-        NewGame,
-        YourTurn,
-        EnemyTurn,
-        End
+        yield return new WaitForSeconds(waitDuration);
+        endturnButton.interactable = true;
     }
+
 }

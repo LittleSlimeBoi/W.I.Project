@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MonsterCombatManager : CharacterCombatManager
 {
@@ -43,15 +42,18 @@ public class MonsterCombatManager : CharacterCombatManager
     {
         int newPosition;
         int r = Random.Range(0, moveArea.Count);
-        while ((!moveArea[r].Walkable || moveArea[r].Occupied) && moveArea.Count != 0)
+        if(moveArea.Count > 0 )
         {
-            moveArea.RemoveAt(r);
-            r = Random.Range(0, moveArea.Count);
-        }
-        if (moveArea.Count != 0)
-        {
-            newPosition = moveArea[r].tileIndex;
-            MoveTo(newPosition);
+            while ((!moveArea[r].Walkable || moveArea[r].Occupied) && moveArea.Count != 0)
+            {
+                moveArea.RemoveAt(r);
+                r = Random.Range(0, moveArea.Count);
+            }
+            if (moveArea.Count != 0)
+            {
+                newPosition = moveArea[r].tileIndex;
+                MoveTo(newPosition);
+            }
         }
         moveArea.Clear();
     }

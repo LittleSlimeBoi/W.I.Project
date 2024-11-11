@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd0d45cbfded4144a9c3543661c93569, type: 3}
+  m_Name: Grass Field
+  m_EditorClassIdentifier: 
+  localObstacleSprites:
+  - {fileID: -918160482, guid: 6103f03eec3afc142ac11614892eb744, type: 3}
+  - {fileID: 1534418856, guid: 6103f03eec3afc142ac11614892eb744, type: 3}
+  - {fileID: -280345825, guid: 6103f03eec3afc142ac11614892eb744, type: 3}
+  localObstacleAnimation: []
+  localRockSprites:
+  - {fileID: 2022152710, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
+  - {fileID: -892480587, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
+  - {fileID: 1079774242, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
+  - {fileID: -1201691277, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
+  - {fileID: -748295343, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
+  - {fileID: 1751674117, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
+  - {fileID: 897007138, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}

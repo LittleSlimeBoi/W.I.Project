@@ -7,7 +7,7 @@ public class CamController : MonoBehaviour
     public Transform player;
 
     private float minX = 0.5f, maxX = 0.5f, minY = 0.5f, maxY = 0.5f;
-    public void SetRoomBounds(float minX, float maxX, float minY, float maxY)
+    public void SetBounds(float minX, float maxX, float minY, float maxY)
     {
         this.minX = minX;
         this.maxX = maxX;
