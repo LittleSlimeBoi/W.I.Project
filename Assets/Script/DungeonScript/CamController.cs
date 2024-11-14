@@ -29,6 +29,11 @@ public class CamController : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        Camera.main.orthographicSize = 19;
+    }
+
     private void LateUpdate()
     {
         if (player != null)
@@ -40,8 +45,8 @@ public class CamController : MonoBehaviour
     private void FollowPlayerWithinBounds()
     {
         Vector3 targetPos = new Vector3(
-            Mathf.Clamp(player.position.x, minX, maxX),
-            Mathf.Clamp(player.position.y, minY, maxY),
+            Mathf.Clamp(player.position.x, player.position.x, player.position.x),
+            Mathf.Clamp(player.position.y, player.position.y, player.position.y),
             transform.position.z
         );
 

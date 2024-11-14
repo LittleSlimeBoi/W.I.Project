@@ -12,20 +12,18 @@ public class Room : MonoBehaviour
     public enum RoomSize
     {
         Medium = 0,
-        SmallVertical = 1,
-        SmallHorizontal = 2,
-        BigVertical = 3,
-        BigHorizontal = 4,
+        SmallHorizontal = 1,
+        SmallVertical = 2,
+        BigHorizontal = 3,
+        BigVertical = 4,
         ExtraBig = 5
     }
 
     public RoomSize roomSize;
     public RoomType roomType;
-    private Vector2Int posstionInGrid;
-    private Vector2Int sizeInGrid;
     
-    static int baseWidth = 19;
-    static int baseHeight = 11;
+    public static int baseWidth = 19;
+    public static int baseHeight = 11;
 
     private string enviromentName;
     private Grid background;
@@ -36,43 +34,18 @@ public class Room : MonoBehaviour
     private List<Door> doors;           //  1 <= => 2
     private List<Door> activeDoors;     //      0
 
-    public void LoadEnviroment(string enviroment, RoomSize size, AssetReferenceGrid backgroundPrefab,
-                                AssetReferenceInteriorTemplate roomTemplatePrefab)
+    public void SetEnviroment(string enviroment, Grid backgroundPrefab, InteriorTemplate roomTemplatePrefab)
     {
         enviromentName = enviroment;
-        roomSize = size;
 
-        backgroundPrefab.LoadAssetAsync<Grid>().Completed += BackgroundLoadHandle;
-        roomTemplatePrefab.LoadAssetAsync<InteriorTemplate>().Completed += InteriorLoadHandle;
-    }
+        // Instantiate and set background local position
+        background = Instantiate(backgroundPrefab, transform);
+        background.transform.localPosition = GetBackgroundLocalOffset(roomSize);
 
-    // Load and set background local position
-    private void BackgroundLoadHandle(AsyncOperationHandle<Grid> handle)
-    {
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            background = Instantiate(handle.Result, transform);
-            background.transform.localPosition = GetBackgroundLocalOffset(roomSize);
-        }
-        else
-        {
-            Debug.Log("Failed to load background");
-        }
-    }
-
-    // Load and interior template and sprites 
-    private void InteriorLoadHandle(AsyncOperationHandle<InteriorTemplate> handle)
-    {
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            roomInteriorTemplate = Instantiate(handle.Result, transform);
-            interiorSprites = Resources.Load<InteriorSprites>("Sprite/Enviroment Sprite/" + enviromentName + "/" + enviromentName);
-            // There's more
-        }
-        else
-        {
-            Debug.Log("Failed to load background");
-        }
+        // Instatiate interior template and render sprites 
+        roomInteriorTemplate = Instantiate(roomTemplatePrefab, transform);
+        interiorSprites = Resources.Load<InteriorSprites>("Sprite/Enviroment Sprite/" + enviromentName + "/" + enviromentName);
+        // There's more
     }
 
     public void SpawnDoor()

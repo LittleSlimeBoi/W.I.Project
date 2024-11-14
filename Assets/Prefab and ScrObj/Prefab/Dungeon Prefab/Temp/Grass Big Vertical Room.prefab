@@ -1,0 +1,116 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7316761485410241646
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7068479626017544389}
+  - component: {fileID: 5602469672025578974}
+  m_Layer: 0
+  m_Name: Grass Big Vertical Room
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7068479626017544389
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7316761485410241646}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6592283762807502509}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5602469672025578974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7316761485410241646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7309df4d40f2d794fa39f1a087a55e4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomSize: 3
+  roomType: 0
+  doorPrefabs:
+  - {fileID: 3979544830195582625, guid: 5ab54ff92e25e8b49b8f30ec23529b6e, type: 3}
+  - {fileID: 3393076400224324551, guid: a90ee56c67a67204f8d08e76a36ca123, type: 3}
+  - {fileID: 7503349570699794124, guid: 2efc697124ffeb845a8b01c6e01f01a7, type: 3}
+  - {fileID: 2748333499457764030, guid: fcfd51221274d5943a2ef3c2320e8eaa, type: 3}
+--- !u!1001 &3174940809785507637
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7068479626017544389}
+    m_Modifications:
+    - target: {fileID: 7242934751638192930, guid: f50158abf33001b4988ef5243d62ea94, type: 3}
+      propertyPath: m_Name
+      value: Grass Field BigVertical
+      objectReference: {fileID: 0}
+    - target: {fileID: 8607461906498750872, guid: f50158abf33001b4988ef5243d62ea94, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8607461906498750872, guid: f50158abf33001b4988ef5243d62ea94, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8607461906498750872, guid: f50158abf33001b4988ef5243d62ea94, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8607461906498750872, guid: f50158abf33001b4988ef5243d62ea94, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8607461906498750872, guid: f50158abf33001b4988ef5243d62ea94, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8607461906498750872, guid: f50158abf33001b4988ef5243d62ea94, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8607461906498750872, guid: f50158abf33001b4988ef5243d62ea94, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8607461906498750872, guid: f50158abf33001b4988ef5243d62ea94, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8607461906498750872, guid: f50158abf33001b4988ef5243d62ea94, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8607461906498750872, guid: f50158abf33001b4988ef5243d62ea94, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f50158abf33001b4988ef5243d62ea94, type: 3}
+--- !u!4 &6592283762807502509 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8607461906498750872, guid: f50158abf33001b4988ef5243d62ea94, type: 3}
+  m_PrefabInstance: {fileID: 3174940809785507637}
+  m_PrefabAsset: {fileID: 0}

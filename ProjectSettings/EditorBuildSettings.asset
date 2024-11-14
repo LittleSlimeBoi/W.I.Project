@@ -5,14 +5,17 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Main Menu.unity
     guid: 06a8d9ba289c1fa408e962a73d14f2eb
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Combat Scene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/End Screen.unity
     guid: b115dffed8587024d9c13bcc7521f598
+  - enabled: 1
+    path: Assets/Scenes/DungeonScene.unity
+    guid: 89a1dbe84b1f6fe419e1782403e1d68e
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 2dadd09c5c3bc1344a2b7fe49757a008, type: 2}
