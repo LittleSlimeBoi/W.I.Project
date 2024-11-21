@@ -1,8 +1,7 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class DungeonGenerator : MonoBehaviour
 {
@@ -17,8 +16,8 @@ public class DungeonGenerator : MonoBehaviour
     private List<Vector2Int> unavailableSpaces = new List<Vector2Int>();
 
     public string enviromentName;
-    List<AssetReferenceGrid> backgrounds;
-    List<AssetReferenceInteriorTemplate> roomTemplates;
+    List<Grid> backgrounds;
+    List<InteriorTemplate> roomTemplates;
 
     private void Awake()
     {
@@ -40,22 +39,22 @@ public class DungeonGenerator : MonoBehaviour
 
     public void SetSpaceLimit(int level = 1)
     {
-        spaceLimit = Mathf.RoundToInt(Random.Range(1,3) + level * 2.6f);
+        spaceLimit = Mathf.RoundToInt(UnityEngine.Random.Range(1,3) + level * 2.6f);
     }
     public void CreateDungeon()
     {
         // Setup
+        LoadBackground();
         dungeon = new Room[gridSizeX * 2 + 1, gridSizeY * 2 + 1];
-        dungeon[gridSizeX, gridSizeY] = Instantiate(roomPrefabs[0], transform);
+        PlaceRoomIntoScene(Room.RoomSize.Medium, 0, 0);
         dungeon[gridSizeX, gridSizeY].roomType = Room.RoomType.Starting;
-        occupiedSpaces.Add(Vector2Int.zero);
-        unavailableSpaces.Add(Vector2Int.zero);
 
         do
         {
             Room.RoomSize randomSize = GetRandomRoomSize();
             Vector2Int pos = GetRandomPostion(randomSize);
             if (pos == Vector2Int.zero) continue;
+            // Set rrom position
             PlaceRoomIntoScene(randomSize, pos.x, pos.y);
         }while(occupiedSpaces.Count != spaceLimit);
 
@@ -66,64 +65,71 @@ public class DungeonGenerator : MonoBehaviour
         switch (size)
         {
             case Room.RoomSize.Medium:
-                dungeon[x + gridSizeX, y + gridSizeY] = newRoom;
-                dungeon[x + gridSizeX, y + gridSizeY].transform.position = new Vector3(x * Room.baseWidth, y * Room.baseHeight, 0);
-                occupiedSpaces.Add(new Vector2Int(x, y));
-                unavailableSpaces.Add(new Vector2Int(x, y));
+                AddRoomToDungeon(newRoom, x, y, 1, 1, 0, 0);
                 break;
             case Room.RoomSize.SmallHorizontal:
-                dungeon[x + gridSizeX, y + gridSizeY] = newRoom;
-                dungeon[x + gridSizeX, y + gridSizeY].transform.position = new Vector3(x * Room.baseWidth, y * Room.baseHeight, 0);
-                occupiedSpaces.Add(new Vector2Int(x, y));
-                unavailableSpaces.Add(new Vector2Int(x, y));
+                AddRoomToDungeon(newRoom, x, y, 1, 1, 0, 0);
                 unavailableSpaces.Add(new Vector2Int(x, y - 1));
                 unavailableSpaces.Add(new Vector2Int(x, y + 1));
                 break;
             case Room.RoomSize.SmallVertical:
-                dungeon[x + gridSizeX, y + gridSizeY] = newRoom;
-                dungeon[x + gridSizeX, y + gridSizeY].transform.position = new Vector3(x * Room.baseWidth, y * Room.baseHeight, 0);
-                occupiedSpaces.Add(new Vector2Int(x, y));
-                unavailableSpaces.Add(new Vector2Int(x, y));
+                AddRoomToDungeon(newRoom, x, y, 1, 1, 0, 0);
                 unavailableSpaces.Add(new Vector2Int(x - 1, y));
                 unavailableSpaces.Add(new Vector2Int(x + 1, y));
                 break;
             case Room.RoomSize.BigHorizontal:
-                dungeon[x + gridSizeX, y + gridSizeY] = newRoom; dungeon[x + gridSizeX + 1, y + gridSizeY] = newRoom;
-                dungeon[x + gridSizeX, y + gridSizeY].transform.position = new Vector3((x + 0.5f) * Room.baseWidth, y * Room.baseHeight, 0);
-                occupiedSpaces.Add(new Vector2Int(x, y));
-                occupiedSpaces.Add(new Vector2Int(x + 1, y));
-                unavailableSpaces.Add(new Vector2Int(x, y));
-                unavailableSpaces.Add(new Vector2Int(x + 1, y));
+                AddRoomToDungeon(newRoom, x, y, 2, 1, 0.5f, 0);
                 break;
             case Room.RoomSize.BigVertical:
-                dungeon[x + gridSizeX, y + gridSizeY] = newRoom; dungeon[x + gridSizeX, y + gridSizeY + 1] = newRoom;
-                dungeon[x + gridSizeX, y + gridSizeY].transform.position = new Vector3(x * Room.baseWidth, (y + 0.5f) * Room.baseHeight, 0);
-                occupiedSpaces.Add(new Vector2Int(x, y));
-                occupiedSpaces.Add(new Vector2Int(x, y + 1));
-                unavailableSpaces.Add(new Vector2Int(x, y));
-                unavailableSpaces.Add(new Vector2Int(x, y + 1));
+                AddRoomToDungeon(newRoom, x, y, 1, 2, 0, 0.5f);
                 break;
             case Room.RoomSize.ExtraBig:
-                dungeon[x + gridSizeX, y + gridSizeY] = newRoom; dungeon[x + gridSizeX + 1, y + gridSizeY] = newRoom; dungeon[x + gridSizeX, y + gridSizeY + 1] = newRoom; dungeon[x + gridSizeX + 1, y + gridSizeY + 1] = newRoom;
-                dungeon[x + gridSizeX, y + gridSizeY].transform.position = new Vector3((x + 0.5f) * Room.baseWidth, (y + 0.5f) * Room.baseHeight, 0);
-                occupiedSpaces.Add(new Vector2Int(x, y));
-                occupiedSpaces.Add(new Vector2Int(x + 1, y));
-                occupiedSpaces.Add(new Vector2Int(x, y + 1));
-                occupiedSpaces.Add(new Vector2Int(x + 1, y + 1));
-                unavailableSpaces.Add(new Vector2Int(x, y));
-                unavailableSpaces.Add(new Vector2Int(x + 1, y));
-                unavailableSpaces.Add(new Vector2Int(x, y + 1));
-                unavailableSpaces.Add(new Vector2Int(x + 1, y + 1));
+                AddRoomToDungeon(newRoom, x, y, 2, 2, 0.5f, 0.5f);
                 break;
         }
     }
+    // Asset loading
+    private void LoadBackground()
+    {
+        backgrounds = Resources.LoadAll<Grid>("Loading Prefab/Background/" + enviromentName).ToList();
+        backgrounds.Sort((a, b) =>
+        {
+            int priorityA = 0, priorityB = 0;
+            foreach (Room.RoomSize size in Enum.GetValues(typeof(Room.RoomSize)))
+            {
+                if (a.name.Contains(size.ToString())) priorityA = (int)size;
+                if (b.name.Contains(size.ToString())) priorityB = (int)size;
+            }
+            return priorityA.CompareTo(priorityB);
+        });
+    }
+
+    // Give room position and assets
+    private void AddRoomToDungeon(Room newRoom, int x, int y, int width, int height, float offsetX, float offsetY)
+    {
+        for (int i = 0; i < height; i++)
+        {
+            for(int j = 0; j < width; j++)
+            {
+                dungeon[x + j + gridSizeX, y + i + gridSizeY] = newRoom;
+                occupiedSpaces.Add(new Vector2Int(x + j, y + i));
+                unavailableSpaces.Add(new Vector2Int(x + j, y + i));
+            }
+        }
+        dungeon[x + gridSizeX, y + gridSizeY].transform.position = new Vector3((x + offsetX) * Room.baseWidth, (y + offsetY) * Room.baseHeight, 0);
+        dungeon[x + gridSizeX, y + gridSizeY].startPos = new Vector2Int(x, y);
+        dungeon[x + gridSizeX, y + gridSizeY].name = $"{newRoom.roomSize} Room {x} {y}";
+        dungeon[x + gridSizeX, y + gridSizeY].SetEnviroment(enviromentName, backgrounds[(int)newRoom.roomSize]);
+    }
+
+    // Helper functions
     private Vector2Int GetRandomPostion(Room.RoomSize roomSize)
     {
         List<Vector2Int> possiblePositions = new List<Vector2Int>();
         int safeblock = 50;
         while (possiblePositions.Count == 0 && safeblock > 0)
         {
-            int index = Random.Range(0, occupiedSpaces.Count);
+            int index = UnityEngine.Random.Range(0, occupiedSpaces.Count);
             int x = occupiedSpaces[index].x;
             int y = occupiedSpaces[index].y;
             switch (roomSize)
@@ -164,11 +170,11 @@ public class DungeonGenerator : MonoBehaviour
             safeblock--;
         }
         if (possiblePositions.Count == 0) { return Vector2Int.zero; }
-        return possiblePositions[Random.Range(0, possiblePositions.Count)];
+        return possiblePositions[UnityEngine.Random.Range(0, possiblePositions.Count)];
     }
     private Room.RoomSize GetRandomRoomSize()
     {
-        int random = Random.Range(0, 71);
+        int random = UnityEngine.Random.Range(0, 100);
         int avaiableSpace = spaceLimit - occupiedSpaces.Count;
         if (avaiableSpace > 8){
             switch (random)
@@ -227,20 +233,9 @@ public class DungeonGenerator : MonoBehaviour
         return true;
     }
     
-    public void ReleaseAssetReferenceObjects()
+    public void UnloadAsset()
     {
-        foreach (var background in  backgrounds) {
-            if (background != null)
-            {
-                background.ReleaseAsset();
-            }
-        }
-        foreach (var template in roomTemplates) {
-            if(template != null)
-            {
-                template.ReleaseAsset();
-            }
-        }
+        backgrounds.Clear();
+        Resources.UnloadUnusedAssets();
     }
-
 }

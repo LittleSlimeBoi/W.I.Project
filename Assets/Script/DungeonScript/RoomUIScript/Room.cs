@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class Room : MonoBehaviour
 {
@@ -25,6 +23,8 @@ public class Room : MonoBehaviour
     public static int baseWidth = 19;
     public static int baseHeight = 11;
 
+    [HideInInspector] public Vector2Int startPos;
+
     private string enviromentName;
     private Grid background;
     private InteriorTemplate roomInteriorTemplate;
@@ -34,7 +34,7 @@ public class Room : MonoBehaviour
     private List<Door> doors;           //  1 <= => 2
     private List<Door> activeDoors;     //      0
 
-    public void SetEnviroment(string enviroment, Grid backgroundPrefab, InteriorTemplate roomTemplatePrefab)
+    public void SetEnviroment(string enviroment, Grid backgroundPrefab/*, InteriorTemplate roomTemplatePrefab*/)
     {
         enviromentName = enviroment;
 
@@ -43,8 +43,8 @@ public class Room : MonoBehaviour
         background.transform.localPosition = GetBackgroundLocalOffset(roomSize);
 
         // Instatiate interior template and render sprites 
-        roomInteriorTemplate = Instantiate(roomTemplatePrefab, transform);
-        interiorSprites = Resources.Load<InteriorSprites>("Sprite/Enviroment Sprite/" + enviromentName + "/" + enviromentName);
+        //roomInteriorTemplate = Instantiate(roomTemplatePrefab, transform);
+        //interiorSprites = Resources.Load<InteriorSprites>("Sprite/Enviroment Sprite/" + enviromentName + "/" + enviromentName);
         // There's more
     }
 

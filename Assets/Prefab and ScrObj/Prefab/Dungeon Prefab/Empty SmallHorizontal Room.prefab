@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2614642057286294477}
   - component: {fileID: 3231564410320208932}
   m_Layer: 0
-  m_Name: Empty Small Horizontal Room
+  m_Name: Empty SmallHorizontal Room
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,8 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7309df4d40f2d794fa39f1a087a55e4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomSize: 2
+  roomSize: 1
   roomType: 0
+  startPos: {x: 0, y: 0}
   doorPrefabs:
   - {fileID: 3979544830195582625, guid: 5ab54ff92e25e8b49b8f30ec23529b6e, type: 3}
   - {fileID: 3393076400224324551, guid: a90ee56c67a67204f8d08e76a36ca123, type: 3}
