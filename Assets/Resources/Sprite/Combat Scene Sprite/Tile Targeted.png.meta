@@ -123,7 +123,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Target Tile 0_0
+      name: Tile Targeted_0
       rect:
         serializedVersion: 2
         x: 0
@@ -131,20 +131,20 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 42f821da1d6393a4da02580bf4ebd9f4
-      internalID: 117321779
+      spriteID: aaf55757d82aed340a87ddf57408f76b
+      internalID: 1572446112
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Target Tile 0_1
+      name: Tile Targeted_1
       rect:
         serializedVersion: 2
         x: 16
@@ -152,56 +152,14 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a4740fc06aacf8348bc1ae9e092cc321
-      internalID: 503934508
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Target Tile 0_2
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2dc175d282ee71a45a3dc5f8c1339855
-      internalID: -1512024145
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Target Tile 0_3
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 0
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 08034bd224e7905489c7f3dcd47460e0
-      internalID: 179808535
+      spriteID: bb2078a1c01657243abcaca225a97c35
+      internalID: 34249398
       vertices: []
       indices: 
       edges: []
@@ -217,10 +175,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Target Tile 0_0: 117321779
-      Target Tile 0_1: 503934508
-      Target Tile 0_2: -1512024145
-      Target Tile 0_3: 179808535
+      Tile Targeted_0: 1572446112
+      Tile Targeted_1: 34249398
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

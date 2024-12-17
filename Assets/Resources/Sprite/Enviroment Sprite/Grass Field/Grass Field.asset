@@ -12,16 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd0d45cbfded4144a9c3543661c93569, type: 3}
   m_Name: Grass Field
   m_EditorClassIdentifier: 
-  localObstacleSprites:
-  - {fileID: -918160482, guid: 6103f03eec3afc142ac11614892eb744, type: 3}
-  - {fileID: 1534418856, guid: 6103f03eec3afc142ac11614892eb744, type: 3}
-  - {fileID: -280345825, guid: 6103f03eec3afc142ac11614892eb744, type: 3}
-  localObstacleAnimation: []
+  localObstacleSprites: []
+  localObstacleAnimation:
+  - {fileID: 7400000, guid: 9fe3bc8969f9d774ca229518a2764eba, type: 2}
+  - {fileID: 7400000, guid: ae677d822507b854ca370c5a3fa5b8fb, type: 2}
+  - {fileID: 7400000, guid: e9c2adb41a7d2234493143fb242fd218, type: 2}
+  - {fileID: 7400000, guid: de431ebd8eee721469fcc335d4b13666, type: 2}
+  - {fileID: 7400000, guid: 00e73dfb325807746859db5a45209a41, type: 2}
+  - {fileID: 7400000, guid: cbedd0d82cb4e354e9f4ceb5b42bc8c3, type: 2}
+  - {fileID: 7400000, guid: 4ab9c72d258afad449ac6b465c653f5d, type: 2}
+  - {fileID: 7400000, guid: 18a23228ea77d514681430daeeafe7a2, type: 2}
+  - {fileID: 7400000, guid: e9c04ff15352bdf419555e5f2818ea76, type: 2}
+  - {fileID: 7400000, guid: 071163b01e60c6f43bcb43261348d25a, type: 2}
+  - {fileID: 7400000, guid: 30c94a80cc7d09d4aa9401e15e8bb9d3, type: 2}
+  - {fileID: 7400000, guid: 59f876631fdcb3948b6bfb22d71ec1ee, type: 2}
+  - {fileID: 7400000, guid: 9a71c2e320f8c5d4c85b7bf4c8c255ff, type: 2}
+  - {fileID: 7400000, guid: 538b4fd6a8acbfa418bee93f3b0f98f3, type: 2}
+  - {fileID: 7400000, guid: c858bb38d84305645868ef617a669417, type: 2}
+  - {fileID: 7400000, guid: 1c5dd2f0cf0d8a54d9432dc271a2a7ce, type: 2}
   localRockSprites:
-  - {fileID: 2022152710, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
-  - {fileID: -892480587, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
-  - {fileID: 1079774242, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
-  - {fileID: -1201691277, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
-  - {fileID: -748295343, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
-  - {fileID: 1751674117, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
-  - {fileID: 897007138, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
+  - {fileID: -1358977521, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
+  - {fileID: -1111811621, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
+  - {fileID: 1803784011, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
+  - {fileID: 1268592638, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
+  - {fileID: 850051376, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
+  - {fileID: -1337903399, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
+  - {fileID: 666078850, guid: 30d36d2c20592884b9e9e6febd080598, type: 3}
+  localShadow: {fileID: 21300000, guid: b365b33712e0ada4887127989abe48f4, type: 3}

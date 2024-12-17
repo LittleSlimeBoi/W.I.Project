@@ -38,6 +38,6 @@ public class PlayerDungeonManager : CharacterDungeonManager
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("collided" + collision.gameObject);
+        //Debug.Log("collided" + collision.gameObject);
     }
 }

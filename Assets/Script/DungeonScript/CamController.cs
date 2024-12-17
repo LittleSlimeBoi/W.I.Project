@@ -31,7 +31,7 @@ public class CamController : MonoBehaviour
 
     private void Start()
     {
-        Camera.main.orthographicSize = 19;
+        //Camera.main.orthographicSize = 19;
     }
 
     private void LateUpdate()

@@ -57,7 +57,6 @@ public class CharacterCombatManager : MonoBehaviour
         hp -= damage;
         hpBar.UpdateStatBar();
         if (damage > 0) StartCoroutine(HurtAnimation(hurtAnimDur));
-        Debug.Log(damage);
     }
 
     public int Position { get => position; set => position = value; }

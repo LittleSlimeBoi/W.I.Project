@@ -28,23 +28,26 @@ public class Room : MonoBehaviour
     private string enviromentName;
     private Grid background;
     private InteriorTemplate roomInteriorTemplate;
-    private InteriorSprites interiorSprites;
 
     public List<Door> doorPrefabs;      //      3
     private List<Door> doors;           //  1 <= => 2
     private List<Door> activeDoors;     //      0
 
-    public void SetEnviroment(string enviroment, Grid backgroundPrefab/*, InteriorTemplate roomTemplatePrefab*/)
+    public void SetEnviroment(string enviroment, Grid backgroundPrefab, InteriorTemplate roomTemplatePrefab)
     {
         enviromentName = enviroment;
 
         // Instantiate and set background local position
         background = Instantiate(backgroundPrefab, transform);
-        background.transform.localPosition = GetBackgroundLocalOffset(roomSize);
+        background.transform.localPosition = GetChildLocalOffset(roomSize);
 
-        // Instatiate interior template and render sprites 
-        //roomInteriorTemplate = Instantiate(roomTemplatePrefab, transform);
-        //interiorSprites = Resources.Load<InteriorSprites>("Sprite/Enviroment Sprite/" + enviromentName + "/" + enviromentName);
+        // Instatiate interior template and render sprites
+        if(roomTemplatePrefab != null )
+        {
+            roomInteriorTemplate = Instantiate(roomTemplatePrefab, transform);
+            roomInteriorTemplate.RenderInterior(enviroment);
+        }
+        
         // There's more
     }
 
@@ -53,7 +56,7 @@ public class Room : MonoBehaviour
 
     }
 
-    private Vector3 GetBackgroundLocalOffset(RoomSize size)
+    private Vector3 GetChildLocalOffset(RoomSize size)
     {
         switch(size)
         {

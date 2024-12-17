@@ -20,11 +20,6 @@ public class Card : MonoBehaviour
     private void Start()
     {
         transform.localScale = new Vector2(1.2f, 1.2f);
-        PaintCardGrid();
-        cost.text = info.cost.ToString();
-        description.sprite = info.cardDes;
-
-        textDes.text = info.placeHolderDes;
     }
 
     public void AssignValueToTile(bool assign, int posX, int posY)
@@ -103,6 +98,7 @@ public class Card : MonoBehaviour
         PaintCardGrid();
         cost.text = info.cost.ToString();
         description.sprite = info.cardDes;
+        textDes.text = info.placeHolderDes;
         CardMouseEvent.canHover = true;
     }
 

@@ -16,8 +16,8 @@ public class DungeonGenerator : MonoBehaviour
     private List<Vector2Int> unavailableSpaces = new List<Vector2Int>();
 
     public string enviromentName;
-    List<Grid> backgrounds;
-    List<InteriorTemplate> roomTemplates;
+    private List<Grid> backgrounds;
+    [SerializeField] private List<InteriiorList> roomTemplates;
 
     private void Awake()
     {
@@ -119,7 +119,11 @@ public class DungeonGenerator : MonoBehaviour
         dungeon[x + gridSizeX, y + gridSizeY].transform.position = new Vector3((x + offsetX) * Room.baseWidth, (y + offsetY) * Room.baseHeight, 0);
         dungeon[x + gridSizeX, y + gridSizeY].startPos = new Vector2Int(x, y);
         dungeon[x + gridSizeX, y + gridSizeY].name = $"{newRoom.roomSize} Room {x} {y}";
-        dungeon[x + gridSizeX, y + gridSizeY].SetEnviroment(enviromentName, backgrounds[(int)newRoom.roomSize]);
+        dungeon[x + gridSizeX, y + gridSizeY].SetEnviroment(
+            enviromentName,
+            backgrounds[(int)newRoom.roomSize],
+            roomTemplates[(int)newRoom.roomSize].templates[UnityEngine.Random.Range(0, roomTemplates[(int)newRoom.roomSize].templates.Count)]
+        );
     }
 
     // Helper functions
