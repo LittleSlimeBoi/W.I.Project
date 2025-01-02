@@ -1,11 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterDungeonManager : MonoBehaviour
 {
-    public float moveSpeed = 5f;
-
     protected Rigidbody2D rb;
     public Animator animator;
     // Start is called before the first frame update

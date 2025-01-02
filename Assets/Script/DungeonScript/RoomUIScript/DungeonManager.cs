@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class DungeonGenerator : MonoBehaviour
+public class DungeonManager : MonoBehaviour
 {
-    public static DungeonGenerator Instance;
+    public static DungeonManager Instance;
 
     private int spaceLimit = 16;
-    private int gridSizeX = 5, gridSizeY = 5;
+    public int GridSizeX { get; } = 5;
+    public int GridSizeY { get; } = 5;
     public Room[] roomPrefabs;
-    private Room[,] dungeon;
+    public Room[,] Dungeon { get; private set; }
     private List<Room> endRooms = new List<Room>();
     private List<Vector2Int> occupiedSpaces = new List<Vector2Int>();
     private List<Vector2Int> unavailableSpaces = new List<Vector2Int>();
@@ -18,6 +19,8 @@ public class DungeonGenerator : MonoBehaviour
     public string enviromentName;
     private List<Grid> backgrounds;
     [SerializeField] private List<InteriiorList> roomTemplates;
+
+    public static Room currentRoom;
 
     private void Awake()
     {
@@ -36,6 +39,20 @@ public class DungeonGenerator : MonoBehaviour
     {
         CreateDungeon();
     }
+    public void NewCurrentRoom(Room room)
+    {
+        OpenCurrentRoom();
+        // To do: disable monster inside incomplete room
+        currentRoom = room;
+    }
+    public void CloseCurrentRoom()
+    {
+        currentRoom.CloseAllDorrs();
+    }
+    public void OpenCurrentRoom()
+    {
+        currentRoom.OpenAllDoors();
+    }
 
     public void SetSpaceLimit(int level = 1)
     {
@@ -45,10 +62,12 @@ public class DungeonGenerator : MonoBehaviour
     {
         // Setup
         LoadBackground();
-        dungeon = new Room[gridSizeX * 2 + 1, gridSizeY * 2 + 1];
+        Dungeon = new Room[GridSizeX * 2 + 1, GridSizeY * 2 + 1];
         PlaceRoomIntoScene(Room.RoomSize.Medium, 0, 0);
-        dungeon[gridSizeX, gridSizeY].roomType = Room.RoomType.Starting;
+        Dungeon[GridSizeX, GridSizeY].roomType = Room.RoomType.Starting;
+        currentRoom = Dungeon[GridSizeX, GridSizeY];
 
+        // Room generation
         do
         {
             Room.RoomSize randomSize = GetRandomRoomSize();
@@ -58,6 +77,15 @@ public class DungeonGenerator : MonoBehaviour
             PlaceRoomIntoScene(randomSize, pos.x, pos.y);
         }while(occupiedSpaces.Count != spaceLimit);
 
+
+        // Wall the dungeon
+        foreach (var room in Dungeon)
+        {
+            if(room != null)
+            {
+                room.SetRoomConnection();
+            }
+        }
     }
     private void PlaceRoomIntoScene(Room.RoomSize size, int x, int y)
     {
@@ -111,15 +139,15 @@ public class DungeonGenerator : MonoBehaviour
         {
             for(int j = 0; j < width; j++)
             {
-                dungeon[x + j + gridSizeX, y + i + gridSizeY] = newRoom;
+                Dungeon[x + j + GridSizeX, y + i + GridSizeY] = newRoom;
                 occupiedSpaces.Add(new Vector2Int(x + j, y + i));
                 unavailableSpaces.Add(new Vector2Int(x + j, y + i));
             }
         }
-        dungeon[x + gridSizeX, y + gridSizeY].transform.position = new Vector3((x + offsetX) * Room.baseWidth, (y + offsetY) * Room.baseHeight, 0);
-        dungeon[x + gridSizeX, y + gridSizeY].startPos = new Vector2Int(x, y);
-        dungeon[x + gridSizeX, y + gridSizeY].name = $"{newRoom.roomSize} Room {x} {y}";
-        dungeon[x + gridSizeX, y + gridSizeY].SetEnviroment(
+        Dungeon[x + GridSizeX, y + GridSizeY].transform.position = new Vector3((x + offsetX) * Room.baseWidth, (y + offsetY) * Room.baseHeight, 0);
+        Dungeon[x + GridSizeX, y + GridSizeY].gridPos = new Vector2Int(x, y);
+        Dungeon[x + GridSizeX, y + GridSizeY].name = $"{newRoom.roomSize} Room {x} {y}";
+        Dungeon[x + GridSizeX, y + GridSizeY].SetEnviroment(
             enviromentName,
             backgrounds[(int)newRoom.roomSize],
             roomTemplates[(int)newRoom.roomSize].templates[UnityEngine.Random.Range(0, roomTemplates[(int)newRoom.roomSize].templates.Count)]
@@ -232,8 +260,8 @@ public class DungeonGenerator : MonoBehaviour
     }
     private bool IsWithInBorderHere(int x, int y, int width = 1, int height = 1)
     {
-        for (int i = 0; i < width ; i++) { if (x + i > gridSizeX || x + i < -gridSizeX) return false; }
-        for (int i = 0; i < height; i++) { if (y + i > gridSizeY || y + i < -gridSizeY) return false; }
+        for (int i = 0; i < width ; i++) { if (x + i > GridSizeX || x + i < -GridSizeX) return false; }
+        for (int i = 0; i < height; i++) { if (y + i > GridSizeY || y + i < -GridSizeY) return false; }
         return true;
     }
     

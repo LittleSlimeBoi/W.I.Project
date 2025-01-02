@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CharacterCombatManager : MonoBehaviour
 {
     public StatBar hpBar;
+    public int maxHP;
     public int hp;
     public int bonusAtk = 0;
     public int position;
@@ -138,7 +139,7 @@ public class CharacterCombatManager : MonoBehaviour
 
     public virtual int GetMaxStat(StatBar.StatType statType)
     {
-        return hp;
+        return maxHP;
     }
 
     public virtual int GetCurrentStat(StatBar.StatType statType)

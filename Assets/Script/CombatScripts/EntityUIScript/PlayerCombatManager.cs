@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class PlayerCombatManager : CharacterCombatManager
 {
-    public int maxHP;
     public StatBar manaBar;
     public int maxMana;
     public int mana;

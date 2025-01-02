@@ -6,8 +6,8 @@ public class MonsterCombatManager : CharacterCombatManager
     public MonsterInfo info;
     protected int damage;
     protected int atkX, atkY;
-    public List<GridTile> atkArea;
-    public List<GridTile> moveArea;
+    [HideInInspector] public List<GridTile> atkArea;
+    [HideInInspector] public List<GridTile> moveArea;
 
     [HideInInspector] public int fieldIndex;
 
@@ -72,15 +72,16 @@ public class MonsterCombatManager : CharacterCombatManager
 
     }
 
-    public void InitMonster(MonsterInfo monsterInfo, int fieldIndex)
+    public void InitMonster(MonsterInfo monsterInfo, int fieldIndex, int hp = 0)
     {
         info = monsterInfo;
         name = info.monsterName;
-        hp = info.maxHP;
+        maxHP = info.maxHP;
         characterIcon.sprite = info.monsterIcon;
         characterDes.sprite = info.monsterDes;
 
         this.fieldIndex = fieldIndex;
+        this.hp = (hp != 0) ? hp : maxHP;
     }
 
     public override int GetMaxStat(StatBar.StatType statType)

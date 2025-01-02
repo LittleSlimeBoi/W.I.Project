@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 85c45ffed043c2e4182b25df88a06812, type: 3}
-  m_Name: 5. ExtraBig
+  m_Name: 2. SmallVertical
   m_EditorClassIdentifier: 
   templates:
-  - {fileID: 2060889486394641473, guid: 66b853bc2f9bbfb409d3a8aed3cd0de6, type: 3}
+  - {fileID: 5827792807681628337, guid: 6efd4562d5a8f2a429c4a70afb247f4e, type: 3}

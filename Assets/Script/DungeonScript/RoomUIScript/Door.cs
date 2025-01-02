@@ -21,27 +21,25 @@ public class Door : MonoBehaviour
     public DoorType doorType;
     [SerializeField] protected GameObject doorCollider;
     [SerializeField] protected GameObject wall;
+    [SerializeField] protected BoxCollider2D raycastBlocker;
 
     protected float entryOffset = 2.75f;
     public static bool isGoingThroughDoor = false;
-
-    private void Start()
-    {
-        SetChildPosition();
-        SetChildCollider();
-        SetDoorSprite("Grass Field");
-    }
+    
+    public IClampCamera ClampCamera { private get; set; }
 
     public void Open()
     {
         doorCollider.SetActive(false);
         doorState = DoorState.Opened;
+        raycastBlocker.enabled = true;
     }
 
     public void Close()
     {
         doorCollider.SetActive(true);
         doorState = DoorState.Closed;
+        raycastBlocker.enabled = false;
     }
 
     public void Wall()
@@ -51,7 +49,7 @@ public class Door : MonoBehaviour
         wall.SetActive(true);
         doorState = DoorState.Walled;
     }
-
+    // Going into a new room
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player") && !isGoingThroughDoor)
@@ -59,14 +57,8 @@ public class Door : MonoBehaviour
             isGoingThroughDoor = true;
             Vector2 targetPos = GetTargetPosition(other.transform.position, entryOffset);
             UpdatePlayerPosition(other.transform, targetPos);
+            DungeonManager.Instance.NewCurrentRoom(ClampCamera.TryGetRoom());
         }
-    }
-
-    protected void SetChildPosition()
-    {
-        Vector3 setupVector = new Vector3(0.5f, 0.5f, 0);
-        doorCollider.transform.position = GetTargetPosition(setupVector, 0);
-        wall.transform.position = GetTargetPosition(setupVector, 0);
     }
 
     public void SetDoorSprite(string enviromentName, DoorType doorType = DoorType.None)
@@ -112,23 +104,6 @@ public class Door : MonoBehaviour
         }
     }
 
-    protected void SetChildCollider()
-    {
-        doorCollider.GetComponent<BoxCollider2D>().size = GetSize();
-        wall.GetComponent<BoxCollider2D>().size = GetSize(2);
-    }
-    protected Vector2 GetSize(int scale = 1)
-    {
-        switch (doorDirection)
-        {
-            case DoorDirection.Left:    return new Vector2(scale, 3);
-            case DoorDirection.Right:   return new Vector2(scale, 3);
-            case DoorDirection.Top:     return new Vector2(3, scale);
-            case DoorDirection.Bottom:  return new Vector2(3, scale);
-        }
-        return Vector2.zero;
-    }
-
     protected Vector2 GetTargetPosition(Vector3 targetPos, float offset)
     {
         switch (doorDirection)
@@ -150,15 +125,26 @@ public class Door : MonoBehaviour
     {
         float elapsed = 0f;
         Vector2 startPos = playerTransform.position;
+
+        Vector3 camStartPos = new(CamController.Instance.TransitionX, CamController.Instance.TransitionY, Camera.main.transform.position.z);
+        ClampCamera.SetCameraBound();
+        float camTargetX = (doorDirection == DoorDirection.Left || doorDirection == DoorDirection.Right 
+            ? camStartPos.x + (doorDirection == DoorDirection.Left ? -1 : 1) * Room.baseWidth 
+            : CamController.Instance.TransitionX);
+        float camTargetY = (doorDirection == DoorDirection.Top || doorDirection == DoorDirection.Bottom 
+            ? camStartPos.y + (doorDirection == DoorDirection.Bottom ? -1 : 1) * Room.baseHeight 
+            : CamController.Instance.TransitionY);
+        Vector3 camTargetPos = new(camTargetX, camTargetY, camStartPos.z);
+
         while (elapsed < transitionDuration)
         {
-            playerTransform.position = Vector2.Lerp(startPos, targetPos, elapsed / transitionDuration);
+            float t = elapsed / transitionDuration;
+            playerTransform.position = Vector2.Lerp(startPos, targetPos, t);
+            Camera.main.transform.position = Vector3.Lerp(camStartPos, camTargetPos, t);
             elapsed += Time.deltaTime;
             yield return null;
         }
         playerTransform.position = targetPos;
         isGoingThroughDoor = false;
     }
-
-    
 }

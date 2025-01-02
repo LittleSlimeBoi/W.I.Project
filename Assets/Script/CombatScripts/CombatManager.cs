@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,10 +7,8 @@ public class CombatManager : MonoBehaviour
 {
     public enum CombatState
     {
-        NewGame,
         YourTurn,
-        EnemyTurn,
-        End
+        EnemyTurn
     }
 
     public static CombatManager Instance;
@@ -28,8 +25,8 @@ public class CombatManager : MonoBehaviour
     public Button endturnButton;
     public LevelLoader loader;
 
-    public CombatState state = CombatState.YourTurn;
-    public static event Action<CombatState> OnCombatStateChange;
+    //public CombatState state = CombatState.YourTurn;
+    //public static event Action<CombatState> OnCombatStateChange;
 
     private void Awake()
     {
@@ -48,24 +45,21 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-
+    /*
     public void UpdateCombatState(CombatState newState)
     {
         state = newState;
         switch (newState)
         {
-            case CombatState.NewGame:
-                break;
             case CombatState.YourTurn:
                 break;
             case CombatState.EnemyTurn:
-                break;
-            case CombatState.End:
                 break;
         }
 
         OnCombatStateChange?.Invoke(newState);
     }
+    */
 
     public void OnEndTurn()
     {

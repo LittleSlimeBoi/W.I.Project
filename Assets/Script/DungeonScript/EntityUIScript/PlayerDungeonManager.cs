@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerDungeonManager : CharacterDungeonManager
 {
+    public float moveSpeed = 5f;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -32,7 +33,7 @@ public class PlayerDungeonManager : CharacterDungeonManager
                 transform.localScale = new Vector3(-1, 1, 0);
             }
 
-            rb.MovePosition(transform.position + Vector3.Normalize(move) * moveSpeed * Time.deltaTime);
+            rb.MovePosition(transform.position + moveSpeed * Time.deltaTime * Vector3.Normalize(move));
         }
     }
 
