@@ -2,9 +2,14 @@ using UnityEngine;
 
 public class PlayerDungeonManager : CharacterDungeonManager
 {
+    public static PlayerDungeonManager Instance;
     public float moveSpeed = 5f;
 
-    // Start is called before the first frame update
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     protected override void Start()
     {
         base.Start();

@@ -17,9 +17,14 @@ public class Room : MonoBehaviour, IClampCamera
         BigVertical = 4,
         ExtraBig = 5
     }
+    public enum RoomState
+    {
+        Incomplete, Complete
+    }
 
     public RoomSize roomSize;
     public RoomType roomType;
+    public RoomState roomState;
     
     public static readonly int baseWidth = 19;
     public static readonly int baseHeight = 11;
@@ -28,13 +33,47 @@ public class Room : MonoBehaviour, IClampCamera
     public int PosX { get { return gridPos.x; } }
     public int PosY { get { return gridPos.y; } }
 
-
     private string enviromentName;
     private Grid background;
     private InteriorTemplate roomInteriorTemplate;
-
-    [SerializeField] private List<Door> doors; // index from bottom up, left to right
     private List<Door> activeDoors = new();
+    [SerializeField] private List<Door> doors; // index from bottom up, left to right
+
+    public List<CombatInfo> GetMonsterInfoInRoom()
+    {
+        return roomInteriorTemplate.monsters;
+    }
+    public void ActivateRoom()
+    {
+        if(roomState == RoomState.Incomplete)
+        {
+            foreach (CombatInfo mon in roomInteriorTemplate.monsters)
+            {
+                mon.gameObject.SetActive(true);
+            }
+        }
+    }
+    public void DeactivateRoom()
+    {
+        foreach (CombatInfo mon in roomInteriorTemplate.monsters)
+        {
+            mon.gameObject.SetActive(false);
+        }
+    }
+    public void OpenAllDoors()
+    {
+        foreach (Door door in activeDoors)
+        {
+            door.Open();
+        }
+    }
+    public void CloseAllDorrs()
+    {
+        foreach (Door door in activeDoors)
+        {
+            door.Close();
+        }
+    }
 
     public void SetEnviroment(string enviroment, Grid backgroundPrefab, InteriorTemplate roomTemplatePrefab)
     {
@@ -55,21 +94,6 @@ public class Room : MonoBehaviour, IClampCamera
         SetDoorEnviroment(enviroment);
     }
 
-
-    public void OpenAllDoors()
-    {
-        foreach (Door door in activeDoors)
-        {
-            door.Open();
-        }
-    }
-    public void CloseAllDorrs()
-    {
-        foreach(Door door in activeDoors)
-        {
-            door.Close();
-        }
-    }
     public void SetDoorEnviroment(string enviroment)
     {
         foreach(Door door in doors)

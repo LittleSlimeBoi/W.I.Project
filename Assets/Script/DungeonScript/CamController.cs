@@ -5,7 +5,6 @@ public class CamController : MonoBehaviour
 {
     public static CamController Instance;
     public Transform player;
-
     public float MinX { get; private set; } = 0.5f;
     public float MinY { get; private set; } = 0.5f;
     public float MaxX { get; private set; } = 0.5f;
@@ -23,20 +22,12 @@ public class CamController : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        Instance = this;
     }
 
     private void Start()
     {
-        //Camera.main.orthographicSize = 19;
+        player = PlayerDungeonManager.Instance.transform;
     }
 
     private void LateUpdate()
@@ -62,4 +53,18 @@ public class CamController : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, targetPos, 1f);
     }
 
+    public void SavePositionInDungeon()
+    {
+        DungeonManager.playerLastPos = player.position;
+        DungeonManager.camLastMinPos = new(MinX, MinY);
+        DungeonManager.camLastMaxPos = new(MaxX, MaxY);
+    }
+    public void RestorePositionInDungeon()
+    {
+        player.position = DungeonManager.playerLastPos;
+        MinX = DungeonManager.camLastMinPos.x;
+        MinY = DungeonManager.camLastMinPos.y;
+        MaxX = DungeonManager.camLastMaxPos.x;
+        MaxY = DungeonManager.camLastMaxPos.y;
+    }
 }

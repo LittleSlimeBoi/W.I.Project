@@ -59,26 +59,28 @@ public class MonsterCombatManager : CharacterCombatManager
     }
 
     // Mark attack range
-    public virtual void Attack()
+    public void Attack()
     {
         damage = info.baseAtk + bonusAtk;
         atkX = TranslatePosX();
         atkY = TranslatePosY();
+        info.behavior.Attack(atkX, atkY, otherSide, atkArea, damage);
     }
 
     // Cancel attack mark when death/ stun
-    public virtual void CancelAttack()
+    public void CancelAttack()
     {
-
+        info.behavior.CancelAttack(atkX, atkY, otherSide, atkArea, damage);
     }
 
-    public void InitMonster(MonsterInfo monsterInfo, int fieldIndex, int hp = 0)
+    public void InitMonster(MonsterInfo monsterInfo, int fieldIndex, int hp)
     {
         info = monsterInfo;
         name = info.monsterName;
         maxHP = info.maxHP;
         characterIcon.sprite = info.monsterIcon;
         characterDes.sprite = info.monsterDes;
+        animator.runtimeAnimatorController = info.controller;
 
         this.fieldIndex = fieldIndex;
         this.hp = (hp != 0) ? hp : maxHP;

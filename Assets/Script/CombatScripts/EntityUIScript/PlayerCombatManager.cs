@@ -19,9 +19,9 @@ public class PlayerCombatManager : CharacterCombatManager
         mySide = otherSide;
         otherSide = swap;
         */
-        position = mySide.anchorPosX + mySide.anchorPosY * mySide.Width;
+        Position = mySide.anchorPosX + mySide.anchorPosY * mySide.Width;
         Card.player = this;
-
+        Debug.Log(Position);
     }
 
     public void UseMana(int cost)

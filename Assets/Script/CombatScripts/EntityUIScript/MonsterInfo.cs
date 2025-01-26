@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Monster Info", menuName = "Monster")]
+[CreateAssetMenu(fileName = "New Monster Info", menuName = "Scriptable Object/Monster/Info")]
 public class MonsterInfo : ScriptableObject
 {
     public string monsterName;
@@ -9,4 +9,6 @@ public class MonsterInfo : ScriptableObject
     public Sprite monsterIcon;
     public Sprite monsterDes;
     public int moveRange;
+    public MonsterBehavior behavior;
+    public RuntimeAnimatorController controller;
 }

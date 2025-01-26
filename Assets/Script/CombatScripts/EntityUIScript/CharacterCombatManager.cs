@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +8,7 @@ public class CharacterCombatManager : MonoBehaviour
     public int maxHP;
     public int hp;
     public int bonusAtk = 0;
-    public int position;
+    public int Position { get; set; }
     private float runAnimDur = 0.5f;
     private float hurtAnimDur = 0.2f;
     public Image characterIcon;
@@ -18,7 +17,7 @@ public class CharacterCombatManager : MonoBehaviour
     public GridMap otherSide;
     private Vector3 offset;
 
-    public Animator animator;
+    [SerializeField] protected Animator animator;
 
     protected virtual void Start()
     {
@@ -60,14 +59,14 @@ public class CharacterCombatManager : MonoBehaviour
         if (damage > 0) StartCoroutine(HurtAnimation(hurtAnimDur));
     }
 
-    public int Position { get => position; set => position = value; }
+    
     public int GetPosX()
     {
-        return position % mySide.Width;
+        return Position % mySide.Width;
     }
     public int GetPosY()
     {
-        return position / mySide.Width;
+        return Position / mySide.Width;
     }
     public int TranslatePosX()
     {
@@ -85,7 +84,7 @@ public class CharacterCombatManager : MonoBehaviour
     }
     public void OccupyAt(int newPosition, bool spawn = false)
     {
-        position = newPosition;
+        Position = newPosition;
         int x = GetPosX() - (mySide.Width / 2);
         int y = (mySide.Height / 2) - GetPosY();
         mySide.grid[GetPosX(), GetPosY()].Occupied = true;

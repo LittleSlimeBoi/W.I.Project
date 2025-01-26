@@ -2,13 +2,11 @@ using UnityEngine;
 
 public class MonsterDungeonManager : CharacterDungeonManager
 {
-    [SerializeField] private MonsterCombatManager monster;
-    private int maxHP;
-    private int hp;
-
-    private void OnEnable()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        maxHP = monster.info.maxHP;
-        hp = maxHP;
+        if (other.CompareTag("Player"))
+        {
+            LevelLoader.Instance.LoadCombatScene();
+        }
     }
 }

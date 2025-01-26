@@ -1310,6 +1310,9 @@ MonoBehaviour:
   - {fileID: 6118104608667559650}
   - {fileID: 3703337036863660392}
   - {fileID: 7617094831707366822}
+  monsters:
+  - {fileID: 7133439142147466987}
+  - {fileID: 4859193203693651475}
 --- !u!1001 &21855693175665278
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2550,6 +2553,10 @@ PrefabInstance:
       propertyPath: patrolPoints.Array.data[5]
       value: 
       objectReference: {fileID: 5122136249116824586}
+    - target: {fileID: 3521308627459436811, guid: a95c6393edee2e24389d83aa1d0aa811, type: 3}
+      propertyPath: monster
+      value: 
+      objectReference: {fileID: 11400000, guid: f0e131272abe74641a78a84650b40893, type: 2}
     - target: {fileID: 4992949610022485502, guid: a95c6393edee2e24389d83aa1d0aa811, type: 3}
       propertyPath: m_Color.a
       value: 0.4392157
@@ -2570,11 +2577,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime
       objectReference: {fileID: 0}
+    - target: {fileID: 7102220630217507348, guid: a95c6393edee2e24389d83aa1d0aa811, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a95c6393edee2e24389d83aa1d0aa811, type: 3}
+--- !u!114 &4859193203693651475 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1201959766688129913, guid: a95c6393edee2e24389d83aa1d0aa811, type: 3}
+  m_PrefabInstance: {fileID: 6035222019399148906}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4e63cb21b0f6b548b4cca5f283a6f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6499154548648225504 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 716293151906353034, guid: a95c6393edee2e24389d83aa1d0aa811, type: 3}
@@ -3163,6 +3185,10 @@ PrefabInstance:
       propertyPath: patrolPoints.Array.data[5]
       value: 
       objectReference: {fileID: 3203850728914743366}
+    - target: {fileID: 3521308627459436811, guid: a95c6393edee2e24389d83aa1d0aa811, type: 3}
+      propertyPath: monster
+      value: 
+      objectReference: {fileID: 11400000, guid: f0e131272abe74641a78a84650b40893, type: 2}
     - target: {fileID: 4992949610022485502, guid: a95c6393edee2e24389d83aa1d0aa811, type: 3}
       propertyPath: m_Color.b
       value: 0.2901961
@@ -3179,11 +3205,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime
       objectReference: {fileID: 0}
+    - target: {fileID: 7102220630217507348, guid: a95c6393edee2e24389d83aa1d0aa811, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a95c6393edee2e24389d83aa1d0aa811, type: 3}
+--- !u!114 &7133439142147466987 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1201959766688129913, guid: a95c6393edee2e24389d83aa1d0aa811, type: 3}
+  m_PrefabInstance: {fileID: 8237410346182165906}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4e63cb21b0f6b548b4cca5f283a6f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8908649767349553688 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 716293151906353034, guid: a95c6393edee2e24389d83aa1d0aa811, type: 3}

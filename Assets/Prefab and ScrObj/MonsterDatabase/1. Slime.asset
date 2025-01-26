@@ -18,3 +18,5 @@ MonoBehaviour:
   monsterIcon: {fileID: 21300000, guid: 433b9486083e10642bb4287938a4b1b9, type: 3}
   monsterDes: {fileID: 0}
   moveRange: 1
+  behavior: {fileID: 11400000, guid: 0f1ea8b846e713b43bd391514076367b, type: 2}
+  controller: {fileID: 9100000, guid: 6d4fb1d42a930c746b8ac3fc53f545fd, type: 2}

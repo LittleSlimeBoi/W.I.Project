@@ -5,6 +5,7 @@ public class InteriorTemplate : MonoBehaviour
 {
     public List<Obstacle> rocks;
     public List<Obstacle> local;
+    public List<CombatInfo> monsters = new();
     private InteriorSprites interiorSprites;
 
     public void RenderInterior(string enviromentName)

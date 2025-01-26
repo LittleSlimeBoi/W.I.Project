@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 716293151906353034}
   - component: {fileID: 89129394454700008}
   - component: {fileID: 3521308627459436811}
+  - component: {fileID: 1201959766688129913}
   - component: {fileID: 2356133836630310931}
   - component: {fileID: 1063048657372537450}
   - component: {fileID: 7789129700454146806}
@@ -103,7 +104,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 6522286024338801810}
-  monster: {fileID: 2513554612950014929, guid: e79bebd8989fb8e49843e6df97aaeb3d, type: 3}
+--- !u!114 &1201959766688129913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7102220630217507348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4e63cb21b0f6b548b4cca5f283a6f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  info: {fileID: 11400000, guid: f0e131272abe74641a78a84650b40893, type: 2}
 --- !u!114 &2356133836630310931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveState: 0
+  initMoveState: 0
   patrolPoints:
   - {fileID: 0}
   - {fileID: 0}
@@ -192,7 +206,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

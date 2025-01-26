@@ -6,7 +6,7 @@ using UnityEngine;
 public class DungeonManager : MonoBehaviour
 {
     public static DungeonManager Instance;
-
+    [SerializeField] private Transform dungeonTransform;
     private int spaceLimit = 16;
     public int GridSizeX { get; } = 5;
     public int GridSizeY { get; } = 5;
@@ -21,6 +21,9 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private List<InteriiorList> roomTemplates;
 
     public static Room currentRoom;
+    public static Vector3 playerLastPos = new(-6, 0.5f, 0);
+    public static Vector2 camLastMinPos = new(0.5f, 0.5f);
+    public static Vector2 camLastMaxPos = new(0.5f, 0.5f);
 
     private void Awake()
     {
@@ -42,8 +45,29 @@ public class DungeonManager : MonoBehaviour
     public void NewCurrentRoom(Room room)
     {
         OpenCurrentRoom();
-        // To do: disable monster inside incomplete room
+        currentRoom.DeactivateRoom();
         currentRoom = room;
+        currentRoom.ActivateRoom();
+    }
+
+    public void OnLoadDungeon()
+    {
+        dungeonTransform.gameObject.SetActive(true);
+        CamController.Instance.RestorePositionInDungeon();
+        LoadCurrentRoom();
+    }
+    public void OnUnloadDungeon()
+    {
+        if (dungeonTransform != null) dungeonTransform.gameObject.SetActive(false);
+    }
+    public void SavePositionInDungeon()
+    {
+        if (CamController.Instance != null) CamController.Instance.SavePositionInDungeon();
+    }
+    public void LoadCurrentRoom()
+    {
+        currentRoom.DeactivateRoom();
+        currentRoom.OpenAllDoors();
     }
     public void CloseCurrentRoom()
     {
@@ -58,6 +82,15 @@ public class DungeonManager : MonoBehaviour
     {
         spaceLimit = Mathf.RoundToInt(UnityEngine.Random.Range(1,3) + level * 2.6f);
     }
+    public void RemoveDungeon()
+    {
+        foreach (Room room in Dungeon)
+        {
+            if (room != null) Destroy(room.gameObject);
+        }
+        unavailableSpaces.Clear();
+        occupiedSpaces.Clear();
+    }
     public void CreateDungeon()
     {
         // Setup
@@ -67,6 +100,8 @@ public class DungeonManager : MonoBehaviour
         Dungeon[GridSizeX, GridSizeY].roomType = Room.RoomType.Starting;
         currentRoom = Dungeon[GridSizeX, GridSizeY];
 
+        int safeblock = 100;
+
         // Room generation
         do
         {
@@ -75,8 +110,10 @@ public class DungeonManager : MonoBehaviour
             if (pos == Vector2Int.zero) continue;
             // Set rrom position
             PlaceRoomIntoScene(randomSize, pos.x, pos.y);
-        }while(occupiedSpaces.Count != spaceLimit);
+            safeblock--;
+        }while(occupiedSpaces.Count != spaceLimit && safeblock > 0);
 
+        Debug.Log($"Safe block value: {safeblock}");
 
         // Wall the dungeon
         foreach (var room in Dungeon)
@@ -89,7 +126,7 @@ public class DungeonManager : MonoBehaviour
     }
     private void PlaceRoomIntoScene(Room.RoomSize size, int x, int y)
     {
-        Room newRoom = Instantiate(roomPrefabs[(int)size], transform);
+        Room newRoom = Instantiate(roomPrefabs[(int)size], dungeonTransform);
         switch (size)
         {
             case Room.RoomSize.Medium:
@@ -269,5 +306,11 @@ public class DungeonManager : MonoBehaviour
     {
         backgrounds.Clear();
         Resources.UnloadUnusedAssets();
+    }
+
+    public void CreateNewDungeon()
+    {
+        RemoveDungeon();
+        CreateDungeon();
     }
 }

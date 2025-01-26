@@ -67,7 +67,6 @@ public class MonsterMovement : MonoBehaviour
                 }
                 break;
         }
-
     }
 
     private float SpeedSyncWithAnimation()

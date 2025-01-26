@@ -4,25 +4,30 @@ using UnityEngine;
 public class SpawnArea : MonoBehaviour
 {
     public GridMap gridMap;
-    private List<MonsterCombatManager> spawnList = new();
+    [SerializeField] private GameObject blankMonsterPrefab;
+    private List<CombatInfo> spawnList = new();
     private List<MonsterCombatManager> monsterList = new();
-    public DataBase dataBase;
+
+    [SerializeField] private MonsterInfo slime;
+    [SerializeField] private MonsterInfo bat;
 
     private void Start()
     {
-        AddToSpawnList(dataBase.monsterDataBase[0], 3);
-        AddToSpawnList(dataBase.monsterDataBase[1], 1);
-        AddToSpawnList(dataBase.monsterDataBase[0], 2);
-        AddToSpawnList(dataBase.monsterDataBase[1], 2);
+        List<CombatInfo> combatInfos = DungeonManager.currentRoom.GetMonsterInfoInRoom();
+        foreach (CombatInfo info in combatInfos)
+        {
+            if (info.GetCurrentHP() == 0) continue;
+            AddToSpawnList(info, 2);
+        }
 
         SpawnMonster(4);
     }
 
-    public void AddToSpawnList(MonsterCombatManager monster, int amount)
+    public void AddToSpawnList(CombatInfo info, int amount = 1)
     {
         for(int i = 0; i < amount; i++)
         {
-            spawnList.Add(monster);
+            spawnList.Add(info);
         }
     }
 
@@ -33,11 +38,10 @@ public class SpawnArea : MonoBehaviour
 
         for (int i = 0; i < spawnAmount; i++)
         {
-            GameObject monsterObj = Instantiate(spawnList[0].gameObject);
-            monsterObj.transform.SetParent(this.transform);
+            GameObject monsterObj = Instantiate(blankMonsterPrefab, transform);
             MonsterCombatManager slot = monsterObj.GetComponent<MonsterCombatManager>();
             slot.SetGrid();
-            slot.InitMonster(slot.info, monsterList.Count);
+            slot.InitMonster(spawnList[0].GetInfo(), monsterList.Count, spawnList[0].GetCurrentHP());
             slot.OccupyAt(gridMap.GetRandomPos(), true);
 
             slot.PrepareToMove();

@@ -226,4 +226,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   transition: {fileID: 7458999697691879032}
+  image: {fileID: 301312543972176903}
   transitionTime: 1

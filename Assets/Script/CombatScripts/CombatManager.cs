@@ -23,7 +23,6 @@ public class CombatManager : MonoBehaviour
     public GridMap playerGrid;
     public GridMap enemyGrid;
     public Button endturnButton;
-    public LevelLoader loader;
 
     //public CombatState state = CombatState.YourTurn;
     //public static event Action<CombatState> OnCombatStateChange;
@@ -43,6 +42,7 @@ public class CombatManager : MonoBehaviour
         {
             handPanel.Display(i);
         }
+
     }
 
     /*
@@ -61,6 +61,13 @@ public class CombatManager : MonoBehaviour
     }
     */
 
+    public void DebugWin()
+    {
+        DungeonManager.currentRoom.roomState = Room.RoomState.Complete;
+        LevelLoader.Instance.LoadDungeonScene();
+    }
+
+    // Button in game use this function
     public void OnEndTurn()
     {
         endturnButton.interactable = false;
@@ -73,7 +80,7 @@ public class CombatManager : MonoBehaviour
         if (player.IsDead)
         {
             // Load lose screen
-            loader.LoadEndScreen();
+            LevelLoader.Instance.LoadEndScreen();
         }
 
         // Refresh player grid
@@ -85,7 +92,8 @@ public class CombatManager : MonoBehaviour
         if(enemySpawner.NoMoreMonster() && !enemySpawner.WaitingToSpawn())
         {
             // Load win scene
-            loader.LoadEndScreen();
+            DungeonManager.currentRoom.roomState = Room.RoomState.Complete;
+            LevelLoader.Instance.LoadDungeonScene();
         }
         else
         {
@@ -113,8 +121,6 @@ public class CombatManager : MonoBehaviour
         enemySpawner.AllMonstersAction();
         // Update tile
         playerGrid.UpdateGridOnNewTurn();
-
-
 
         StartCoroutine(EnableEndButton(1.2f));
     }
