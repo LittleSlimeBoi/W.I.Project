@@ -22,8 +22,10 @@ public class DungeonManager : MonoBehaviour
 
     public static Room currentRoom;
     public static Vector3 playerLastPos = new(-6, 0.5f, 0);
-    public static Vector2 camLastMinPos = new(0.5f, 0.5f);
-    public static Vector2 camLastMaxPos = new(0.5f, 0.5f);
+    public static Vector2 mainCamLastMinPos = new(0.5f, 0.5f);
+    public static Vector2 mainCamLastMaxPos = new(0.5f, 0.5f);
+    public static float minimapCamLastX = 0.5f;
+    public static float minimapCamLastY = 0.5f;
 
     private void Awake()
     {
@@ -41,19 +43,24 @@ public class DungeonManager : MonoBehaviour
     private void Start()
     {
         CreateDungeon();
+        NewCurrentRoom(Dungeon[GridSizeX, GridSizeY]);
     }
     public void NewCurrentRoom(Room room)
     {
         OpenCurrentRoom();
-        currentRoom.DeactivateRoom();
+        currentRoom.HighlightKnownRoom();
+        currentRoom.DeactivateMonster();
         currentRoom = room;
-        currentRoom.ActivateRoom();
+        currentRoom.DiscoverNewRoom();
+        currentRoom.HighlightCurrentRoom();
+        currentRoom.ActivateMonster();
     }
 
     public void OnLoadDungeon()
     {
         dungeonTransform.gameObject.SetActive(true);
-        CamController.Instance.RestorePositionInDungeon();
+        MainCamController.Instance.RestorePositionInDungeon();
+        MiniMapCam.Instance.RestorePositionInDungeon();
         LoadCurrentRoom();
     }
     public void OnUnloadDungeon()
@@ -62,11 +69,12 @@ public class DungeonManager : MonoBehaviour
     }
     public void SavePositionInDungeon()
     {
-        if (CamController.Instance != null) CamController.Instance.SavePositionInDungeon();
+        if (MainCamController.Instance != null) MainCamController.Instance.SavePositionInDungeon();
+        if (MiniMapCam.Instance != null) MiniMapCam.Instance.SavePositionInDungeon();
     }
     public void LoadCurrentRoom()
     {
-        currentRoom.DeactivateRoom();
+        currentRoom.DeactivateMonster();
         currentRoom.OpenAllDoors();
     }
     public void CloseCurrentRoom()
@@ -99,6 +107,7 @@ public class DungeonManager : MonoBehaviour
         PlaceRoomIntoScene(Room.RoomSize.Medium, 0, 0);
         Dungeon[GridSizeX, GridSizeY].roomType = Room.RoomType.Starting;
         currentRoom = Dungeon[GridSizeX, GridSizeY];
+        currentRoom.EnableMiniMapIcon();
 
         int safeblock = 100;
 
@@ -112,8 +121,6 @@ public class DungeonManager : MonoBehaviour
             PlaceRoomIntoScene(randomSize, pos.x, pos.y);
             safeblock--;
         }while(occupiedSpaces.Count != spaceLimit && safeblock > 0);
-
-        Debug.Log($"Safe block value: {safeblock}");
 
         // Wall the dungeon
         foreach (var room in Dungeon)
@@ -169,7 +176,7 @@ public class DungeonManager : MonoBehaviour
         });
     }
 
-    // Give room position and assets
+    // Init room: Give room position and assets
     private void AddRoomToDungeon(Room newRoom, int x, int y, int width, int height, float offsetX, float offsetY)
     {
         for (int i = 0; i < height; i++)
@@ -189,6 +196,8 @@ public class DungeonManager : MonoBehaviour
             backgrounds[(int)newRoom.roomSize],
             roomTemplates[(int)newRoom.roomSize].templates[UnityEngine.Random.Range(0, roomTemplates[(int)newRoom.roomSize].templates.Count)]
         );
+        Dungeon[x + GridSizeX, y + GridSizeY].SetMiniMapIcon();
+
     }
 
     // Helper functions

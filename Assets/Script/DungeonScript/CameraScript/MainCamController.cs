@@ -1,9 +1,9 @@
 using System.Collections;
 using UnityEngine;
 
-public class CamController : MonoBehaviour
+public class MainCamController : MonoBehaviour
 {
-    public static CamController Instance;
+    public static MainCamController Instance;
     public Transform player;
     public float MinX { get; private set; } = 0.5f;
     public float MinY { get; private set; } = 0.5f;
@@ -56,15 +56,15 @@ public class CamController : MonoBehaviour
     public void SavePositionInDungeon()
     {
         DungeonManager.playerLastPos = player.position;
-        DungeonManager.camLastMinPos = new(MinX, MinY);
-        DungeonManager.camLastMaxPos = new(MaxX, MaxY);
+        DungeonManager.mainCamLastMinPos = new(MinX, MinY);
+        DungeonManager.mainCamLastMaxPos = new(MaxX, MaxY);
     }
     public void RestorePositionInDungeon()
     {
         player.position = DungeonManager.playerLastPos;
-        MinX = DungeonManager.camLastMinPos.x;
-        MinY = DungeonManager.camLastMinPos.y;
-        MaxX = DungeonManager.camLastMaxPos.x;
-        MaxY = DungeonManager.camLastMaxPos.y;
+        MinX = DungeonManager.mainCamLastMinPos.x;
+        MinY = DungeonManager.mainCamLastMinPos.y;
+        MaxX = DungeonManager.mainCamLastMaxPos.x;
+        MaxY = DungeonManager.mainCamLastMaxPos.y;
     }
 }

@@ -9,7 +9,7 @@ public class Door : MonoBehaviour
     }
     public enum DoorState
     {
-        Opened, Closed, Walled, Locked, Blocked
+        Opened, Closed, Walled, Locked, Blocked, Hidden
     }
     public enum DoorType
     {
@@ -27,6 +27,11 @@ public class Door : MonoBehaviour
     public static bool isGoingThroughDoor = false;
     
     public IClampCamera ClampCamera { private get; set; }
+
+    public Room GetNeighboringRoom()
+    {
+        return ClampCamera.TryGetRoom();
+    }
 
     public void Open()
     {
@@ -57,7 +62,8 @@ public class Door : MonoBehaviour
             isGoingThroughDoor = true;
             Vector2 targetPos = GetTargetPosition(other.transform.position, entryOffset);
             UpdatePlayerPosition(other.transform, targetPos);
-            DungeonManager.Instance.NewCurrentRoom(ClampCamera.TryGetRoom());
+            DungeonManager.Instance.NewCurrentRoom(GetNeighboringRoom());
+            MiniMapCam.Instance.UpdatePosition();
         }
     }
 
@@ -126,14 +132,14 @@ public class Door : MonoBehaviour
         float elapsed = 0f;
         Vector2 startPos = playerTransform.position;
 
-        Vector3 camStartPos = new(CamController.Instance.TransitionX, CamController.Instance.TransitionY, Camera.main.transform.position.z);
+        Vector3 camStartPos = new(MainCamController.Instance.TransitionX, MainCamController.Instance.TransitionY, Camera.main.transform.position.z);
         ClampCamera.SetCameraBound();
         float camTargetX = (doorDirection == DoorDirection.Left || doorDirection == DoorDirection.Right 
             ? camStartPos.x + (doorDirection == DoorDirection.Left ? -1 : 1) * Room.baseWidth 
-            : CamController.Instance.TransitionX);
+            : MainCamController.Instance.TransitionX);
         float camTargetY = (doorDirection == DoorDirection.Top || doorDirection == DoorDirection.Bottom 
             ? camStartPos.y + (doorDirection == DoorDirection.Bottom ? -1 : 1) * Room.baseHeight 
-            : CamController.Instance.TransitionY);
+            : MainCamController.Instance.TransitionY);
         Vector3 camTargetPos = new(camTargetX, camTargetY, camStartPos.z);
 
         while (elapsed < transitionDuration)

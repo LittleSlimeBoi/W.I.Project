@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using UnityEngine;
 
 public class Room : MonoBehaviour, IClampCamera
@@ -38,12 +37,41 @@ public class Room : MonoBehaviour, IClampCamera
     private InteriorTemplate roomInteriorTemplate;
     private List<Door> activeDoors = new();
     [SerializeField] private List<Door> doors; // index from bottom up, left to right
+    [SerializeField] private MiniMapIcon minimapIcon;
+
+    public Vector2 GetPositionOnMiniMap()
+    {
+        return minimapIcon.GetPosition();
+    }
+    public void HighlightKnownRoom()
+    {
+        minimapIcon.HighlightKnownRoom();
+    }
+    public void HighlightCurrentRoom()
+    {
+        minimapIcon.HighlightCurrentRoom();
+    }
+    public void DiscoverNewRoom()
+    {
+        foreach (Door door in doors)
+        {
+            if (door.doorState != Door.DoorState.Walled)
+            {
+                Room neighbor = door.GetNeighboringRoom();
+                neighbor.EnableMiniMapIcon();
+            }
+        }
+    }
+    public void EnableMiniMapIcon()
+    {
+        minimapIcon.ShowUndiscoveredRoom();
+    }
 
     public List<CombatInfo> GetMonsterInfoInRoom()
     {
         return roomInteriorTemplate.monsters;
     }
-    public void ActivateRoom()
+    public void ActivateMonster()
     {
         if(roomState == RoomState.Incomplete)
         {
@@ -53,7 +81,7 @@ public class Room : MonoBehaviour, IClampCamera
             }
         }
     }
-    public void DeactivateRoom()
+    public void DeactivateMonster()
     {
         foreach (CombatInfo mon in roomInteriorTemplate.monsters)
         {
@@ -184,6 +212,10 @@ public class Room : MonoBehaviour, IClampCamera
         }
     }
 
+    public void SetMiniMapIcon()
+    {
+        minimapIcon.SetSizeAndPosition(roomSize, gridPos);
+    }
 
     public bool IsDifferentRoom(Room other) { return !(this == other); }
 
@@ -193,10 +225,10 @@ public class Room : MonoBehaviour, IClampCamera
         float y = transform.position.y;
         switch (roomSize)
         {
-            case RoomSize.BigHorizontal: CamController.Instance.SetBounds(x - 9, x + 10, y + 0.5f, y + 0.5f); break;
-            case RoomSize.BigVertical: CamController.Instance.SetBounds(x + 0.5f, x + 0.5f, y - 5, y + 6); break;
-            case RoomSize.ExtraBig: CamController.Instance.SetBounds(x - 9, x + 10, y - 5, y + 6); break;
-            default: CamController.Instance.SetBounds(x + 0.5f, x + 0.5f, y + 0.5f, y + 0.5f); break;
+            case RoomSize.BigHorizontal: MainCamController.Instance.SetBounds(x - 9, x + 10, y + 0.5f, y + 0.5f); break;
+            case RoomSize.BigVertical: MainCamController.Instance.SetBounds(x + 0.5f, x + 0.5f, y - 5, y + 6); break;
+            case RoomSize.ExtraBig: MainCamController.Instance.SetBounds(x - 9, x + 10, y - 5, y + 6); break;
+            default: MainCamController.Instance.SetBounds(x + 0.5f, x + 0.5f, y + 0.5f, y + 0.5f); break;
         }
     }
 

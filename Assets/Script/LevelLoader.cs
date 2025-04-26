@@ -54,7 +54,10 @@ public class LevelLoader : MonoBehaviour
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         transition.SetTrigger("End");
 
-        if (sceneName != "Dungeon Scene") DungeonManager.Instance.SavePositionInDungeon();
+        if (sceneName != "Dungeon Scene") 
+        { 
+            DungeonManager.Instance.SavePositionInDungeon(); 
+        }
 
         while (!asyncLoad.isDone)
         {
