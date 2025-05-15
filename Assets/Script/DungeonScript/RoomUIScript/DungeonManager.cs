@@ -12,7 +12,7 @@ public class DungeonManager : MonoBehaviour
     public int GridSizeY { get; } = 5;
     public Room[] roomPrefabs;
     public Room[,] Dungeon { get; private set; }
-    private List<Room> endRooms = new List<Room>();
+    // private List<Room> endRooms = new List<Room>();
     private List<Vector2Int> occupiedSpaces = new List<Vector2Int>();
     private List<Vector2Int> unavailableSpaces = new List<Vector2Int>();
 
@@ -26,6 +26,8 @@ public class DungeonManager : MonoBehaviour
     public static Vector2 mainCamLastMaxPos = new(0.5f, 0.5f);
     public static float minimapCamLastX = 0.5f;
     public static float minimapCamLastY = 0.5f;
+
+    public GameObject EndPlaceHolder;
 
     private void Awake()
     {
@@ -108,6 +110,7 @@ public class DungeonManager : MonoBehaviour
         Dungeon[GridSizeX, GridSizeY].roomType = Room.RoomType.Starting;
         currentRoom = Dungeon[GridSizeX, GridSizeY];
         currentRoom.EnableMiniMapIcon();
+        currentRoom.SetDistance(0);
 
         int safeblock = 100;
 
@@ -130,6 +133,14 @@ public class DungeonManager : MonoBehaviour
                 room.SetRoomConnection();
             }
         }
+
+        // Set distance to the starting room
+
+    }
+    private void CalculateDistance()
+    {
+        Room room = Dungeon[GridSizeX, GridSizeY];
+        Queue<Room> queue = new Queue<Room>();
     }
     private void PlaceRoomIntoScene(Room.RoomSize size, int x, int y)
     {
@@ -175,7 +186,6 @@ public class DungeonManager : MonoBehaviour
             return priorityA.CompareTo(priorityB);
         });
     }
-
     // Init room: Give room position and assets
     private void AddRoomToDungeon(Room newRoom, int x, int y, int width, int height, float offsetX, float offsetY)
     {

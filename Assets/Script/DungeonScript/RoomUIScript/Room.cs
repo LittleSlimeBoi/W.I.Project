@@ -31,6 +31,8 @@ public class Room : MonoBehaviour, IClampCamera
     [HideInInspector] public Vector2Int gridPos;
     public int PosX { get { return gridPos.x; } }
     public int PosY { get { return gridPos.y; } }
+    public int Distance { get; private set; } = 999;
+    public bool Calculated { get; private set; } = false;
 
     private string enviromentName;
     private Grid background;
@@ -38,6 +40,12 @@ public class Room : MonoBehaviour, IClampCamera
     private List<Door> activeDoors = new();
     [SerializeField] private List<Door> doors; // index from bottom up, left to right
     [SerializeField] private MiniMapIcon minimapIcon;
+
+    public void SetDistance(int dis)
+    {
+        Distance = dis;
+        Calculated = true;
+    }
 
     public Vector2 GetPositionOnMiniMap()
     {
@@ -53,13 +61,10 @@ public class Room : MonoBehaviour, IClampCamera
     }
     public void DiscoverNewRoom()
     {
-        foreach (Door door in doors)
+        foreach (Door door in activeDoors)
         {
-            if (door.doorState != Door.DoorState.Walled)
-            {
-                Room neighbor = door.GetNeighboringRoom();
-                neighbor.EnableMiniMapIcon();
-            }
+            Room neighbor = door.GetNeighboringRoom();
+            neighbor.EnableMiniMapIcon();
         }
     }
     public void EnableMiniMapIcon()
