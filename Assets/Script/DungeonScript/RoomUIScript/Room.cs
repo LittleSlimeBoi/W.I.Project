@@ -28,16 +28,16 @@ public class Room : MonoBehaviour, IClampCamera
     public static readonly int baseWidth = 19;
     public static readonly int baseHeight = 11;
 
-    [HideInInspector] public Vector2Int gridPos;
-    public int PosX { get { return gridPos.x; } }
-    public int PosY { get { return gridPos.y; } }
+    public Vector2Int GridPos { get; set; }
+    public int PosX { get { return GridPos.x; } }
+    public int PosY { get { return GridPos.y; } }
     public int Distance { get; private set; } = 999;
     public bool Calculated { get; private set; } = false;
 
     private string enviromentName;
     private Grid background;
     private InteriorTemplate roomInteriorTemplate;
-    private List<Door> activeDoors = new();
+    public List<Door> activeDoors = new();
     [SerializeField] private List<Door> doors; // index from bottom up, left to right
     [SerializeField] private MiniMapIcon minimapIcon;
 
@@ -184,15 +184,20 @@ public class Room : MonoBehaviour, IClampCamera
     }
     private void SetDoorConnection(int x, int y, int i)
     {
-        if (!IsNeighbourAt(x, y))
+        if (!activeDoors.Contains(doors[i]))
         {
-            doors[i].Wall();
-        }
-        else
-        {
-            activeDoors.Add(doors[i]);
-            doors[i].ClampCamera = DungeonManager.Instance.Dungeon[PosX + DungeonManager.Instance.GridSizeX + x,
-                                                                     PosY + DungeonManager.Instance.GridSizeY + y];
+            if (!IsNeighbourAt(x, y))
+            {
+                doors[i].Wall();
+            }
+            else
+            {
+                doors[i].Open();
+                activeDoors.Add(doors[i]);
+                doors[i].ClampCamera = DungeonManager.Instance.Dungeon[PosX + DungeonManager.Instance.GridSizeX + x,
+                                                                       PosY + DungeonManager.Instance.GridSizeY + y];
+                doors[i].TargetCoordinate = new Vector2Int(PosX + x, PosY + y);
+            }
         }
     }
     private bool IsNeighbourAt(int offsetX, int offsetY)
@@ -219,7 +224,7 @@ public class Room : MonoBehaviour, IClampCamera
 
     public void SetMiniMapIcon()
     {
-        minimapIcon.SetSizeAndPosition(roomSize, gridPos);
+        minimapIcon.SetSizeAndPosition(roomSize, GridPos);
     }
 
     public bool IsDifferentRoom(Room other) { return !(this == other); }
@@ -235,10 +240,5 @@ public class Room : MonoBehaviour, IClampCamera
             case RoomSize.ExtraBig: MainCamController.Instance.SetBounds(x - 9, x + 10, y - 5, y + 6); break;
             default: MainCamController.Instance.SetBounds(x + 0.5f, x + 0.5f, y + 0.5f, y + 0.5f); break;
         }
-    }
-
-    public Room TryGetRoom()
-    {
-        return this;
     }
 }

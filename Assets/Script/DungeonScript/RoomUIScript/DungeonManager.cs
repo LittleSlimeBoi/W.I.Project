@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public class DungeonManager : MonoBehaviour
@@ -15,6 +16,8 @@ public class DungeonManager : MonoBehaviour
     // private List<Room> endRooms = new List<Room>();
     private List<Vector2Int> occupiedSpaces = new List<Vector2Int>();
     private List<Vector2Int> unavailableSpaces = new List<Vector2Int>();
+    private List<Vector3Int> roomsWithDistance = new List<Vector3Int>();
+    private int maxDistance = 0;
 
     public string enviromentName;
     private List<Grid> backgrounds;
@@ -27,7 +30,7 @@ public class DungeonManager : MonoBehaviour
     public static float minimapCamLastX = 0.5f;
     public static float minimapCamLastY = 0.5f;
 
-    public GameObject EndPlaceHolder;
+    public Room endPlaceholder;
 
     private void Awake()
     {
@@ -103,14 +106,14 @@ public class DungeonManager : MonoBehaviour
     }
     public void CreateDungeon()
     {
-        // Setup
+        // Setup // Change this later
         LoadBackground();
         Dungeon = new Room[GridSizeX * 2 + 1, GridSizeY * 2 + 1];
         PlaceRoomIntoScene(Room.RoomSize.Medium, 0, 0);
         Dungeon[GridSizeX, GridSizeY].roomType = Room.RoomType.Starting;
+        Dungeon[GridSizeX, GridSizeY].name = "Starting Room";
         currentRoom = Dungeon[GridSizeX, GridSizeY];
         currentRoom.EnableMiniMapIcon();
-        currentRoom.SetDistance(0);
 
         int safeblock = 100;
 
@@ -123,24 +126,68 @@ public class DungeonManager : MonoBehaviour
             // Set rrom position
             PlaceRoomIntoScene(randomSize, pos.x, pos.y);
             safeblock--;
-        }while(occupiedSpaces.Count != spaceLimit && safeblock > 0);
+        } while (occupiedSpaces.Count != spaceLimit && safeblock > 0);
 
-        // Wall the dungeon
-        foreach (var room in Dungeon)
+        // Connect all normal rooms in the dungeon & Set distance from it to the starting room
+        ConnectAllRooms();
+
+        // Generate special room
+        int distance = maxDistance;
+        do
         {
-            if(room != null)
+            Vector2Int pos = GetRandomPostion(distance);
+            distance--;
+            if (distance < 0)
             {
-                room.SetRoomConnection();
+                Debug.Log("Too much room. Can't place end room");
+                break;
             }
-        }
-
-        // Set distance to the starting room
-
+            if (pos == Vector2Int.zero) continue;
+            // Change this later
+            if (endPlaceholder == null) Debug.Log("Make a end room please!!!");
+            else
+            {
+                Room endRoom = Instantiate(endPlaceholder, dungeonTransform);
+                AddRoomToDungeon(endRoom, pos.x, pos.y, 1, 1, 0, 0);
+                Dungeon[GridSizeX + pos.x, GridSizeY + pos.y].name = "End Room";
+                foreach (Vector2Int v in occupiedSpaces)
+                {
+                    Dungeon[GridSizeX + v.x, GridSizeY + v.y].SetRoomConnection();
+                }
+            }
+            break;
+        } while (true);
     }
-    private void CalculateDistance()
+    private void ConnectAllRooms()
     {
-        Room room = Dungeon[GridSizeX, GridSizeY];
-        Queue<Room> queue = new Queue<Room>();
+        Queue<Vector2Int> q = new Queue<Vector2Int>();
+        int distance = 0;
+        int size = 1;
+        q.Enqueue(Vector2Int.zero);
+        do
+        {
+            if (size == 0)
+            {
+                size = q.Count;
+                distance++;
+            }
+            Vector2Int pos = q.Dequeue();
+            size--;
+            Room room = Dungeon[GridSizeX + pos.x, GridSizeY + pos.y];
+            if (!room.Calculated)
+            {
+                // Set distancer
+                room.SetDistance(distance);
+                // Set connection
+                room.SetRoomConnection();
+                roomsWithDistance.Add(new Vector3Int(pos.x, pos.y, distance));
+                if (maxDistance < distance) maxDistance = distance;
+                foreach (Door door in room.activeDoors)
+                {
+                    q.Enqueue(door.TargetCoordinate);
+                }
+            }
+        } while (q.Count > 0);
     }
     private void PlaceRoomIntoScene(Room.RoomSize size, int x, int y)
     {
@@ -191,7 +238,7 @@ public class DungeonManager : MonoBehaviour
     {
         for (int i = 0; i < height; i++)
         {
-            for(int j = 0; j < width; j++)
+            for (int j = 0; j < width; j++)
             {
                 Dungeon[x + j + GridSizeX, y + i + GridSizeY] = newRoom;
                 occupiedSpaces.Add(new Vector2Int(x + j, y + i));
@@ -199,7 +246,7 @@ public class DungeonManager : MonoBehaviour
             }
         }
         Dungeon[x + GridSizeX, y + GridSizeY].transform.position = new Vector3((x + offsetX) * Room.baseWidth, (y + offsetY) * Room.baseHeight, 0);
-        Dungeon[x + GridSizeX, y + GridSizeY].gridPos = new Vector2Int(x, y);
+        Dungeon[x + GridSizeX, y + GridSizeY].GridPos = new Vector2Int(x, y);
         Dungeon[x + GridSizeX, y + GridSizeY].name = $"{newRoom.roomSize} Room {x} {y}";
         Dungeon[x + GridSizeX, y + GridSizeY].SetEnviroment(
             enviromentName,
@@ -211,6 +258,54 @@ public class DungeonManager : MonoBehaviour
     }
 
     // Helper functions
+    private Vector2Int GetRandomPostion(int distance, Room.RoomSize roomSize = Room.RoomSize.Medium)
+    {
+        List<Vector2Int> possiblePositions = new List<Vector2Int>();
+        int index = roomsWithDistance.FindIndex(v => v.z == distance);
+        while (possiblePositions.Count == 0 && index != 1 && index < roomsWithDistance.Count && roomsWithDistance[index].z == distance)
+        {
+            int x = roomsWithDistance[index].x;
+            int y = roomsWithDistance[index].y;
+            switch (roomSize)
+            {
+                case Room.RoomSize.BigVertical:
+                    if (IsValidRoom(roomSize, x - 1, y)) possiblePositions.Add(new Vector2Int(x - 1, y));
+                    if (IsValidRoom(roomSize, x, y - 2)) possiblePositions.Add(new Vector2Int(x, y - 2));
+                    if (IsValidRoom(roomSize, x + 1, y)) possiblePositions.Add(new Vector2Int(x + 1, y));
+                    if (IsValidRoom(roomSize, x, y + 1)) possiblePositions.Add(new Vector2Int(x, y + 1));
+                    if (IsValidRoom(roomSize, x - 1, y - 1)) possiblePositions.Add(new Vector2Int(x - 1, y - 1));
+                    if (IsValidRoom(roomSize, x + 1, y - 1)) possiblePositions.Add(new Vector2Int(x + 1, y - 1));
+                    break;
+                case Room.RoomSize.BigHorizontal:
+                    if (IsValidRoom(roomSize, x - 2, y)) possiblePositions.Add(new Vector2Int(x - 2, y));
+                    if (IsValidRoom(roomSize, x, y - 1)) possiblePositions.Add(new Vector2Int(x, y - 1));
+                    if (IsValidRoom(roomSize, x + 1, y)) possiblePositions.Add(new Vector2Int(x + 1, y));
+                    if (IsValidRoom(roomSize, x, y + 1)) possiblePositions.Add(new Vector2Int(x, y + 1));
+                    if (IsValidRoom(roomSize, x - 1, y - 1)) possiblePositions.Add(new Vector2Int(x - 1, y - 1));
+                    if (IsValidRoom(roomSize, x - 1, y + 1)) possiblePositions.Add(new Vector2Int(x - 1, y + 1));
+                    break;
+                case Room.RoomSize.ExtraBig:
+                    if (IsValidRoom(roomSize, x + 1, y)) possiblePositions.Add(new Vector2Int(x + 1, y));
+                    if (IsValidRoom(roomSize, x, y + 1)) possiblePositions.Add(new Vector2Int(x, y + 1));
+                    if (IsValidRoom(roomSize, x - 2, y)) possiblePositions.Add(new Vector2Int(x - 2, y));
+                    if (IsValidRoom(roomSize, x, y - 2)) possiblePositions.Add(new Vector2Int(x, y - 2));
+                    if (IsValidRoom(roomSize, x + 1, y - 1)) possiblePositions.Add(new Vector2Int(x + 1, y - 1));
+                    if (IsValidRoom(roomSize, x - 1, y + 1)) possiblePositions.Add(new Vector2Int(x - 1, y + 1));
+                    if (IsValidRoom(roomSize, x - 2, y - 1)) possiblePositions.Add(new Vector2Int(x - 2, y - 1));
+                    if (IsValidRoom(roomSize, x - 1, y - 2)) possiblePositions.Add(new Vector2Int(x - 1, y - 2));
+                    break;
+                default:
+                    if (IsValidRoom(roomSize, x - 1, y)) possiblePositions.Add(new Vector2Int(x - 1, y));
+                    if (IsValidRoom(roomSize, x, y - 1)) possiblePositions.Add(new Vector2Int(x, y - 1));
+                    if (IsValidRoom(roomSize, x + 1, y)) possiblePositions.Add(new Vector2Int(x + 1, y));
+                    if (IsValidRoom(roomSize, x, y + 1)) possiblePositions.Add(new Vector2Int(x, y + 1));
+                    break;
+            }
+            index++;
+        }
+        if (possiblePositions.Count == 0) { return Vector2Int.zero; }
+        return possiblePositions[UnityEngine.Random.Range(0, possiblePositions.Count)];
+    }
     private Vector2Int GetRandomPostion(Room.RoomSize roomSize)
     {
         List<Vector2Int> possiblePositions = new List<Vector2Int>();

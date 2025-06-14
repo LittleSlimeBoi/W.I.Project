@@ -25,33 +25,39 @@ public class Door : MonoBehaviour
 
     protected float entryOffset = 2.75f;
     public static bool isGoingThroughDoor = false;
-    
+
+    public Vector2Int TargetCoordinate { get; set; }
     public IClampCamera ClampCamera { private get; set; }
 
     public Room GetNeighboringRoom()
     {
-        return ClampCamera.TryGetRoom();
+        return DungeonManager.Instance.Dungeon[DungeonManager.Instance.GridSizeX + TargetCoordinate.x, 
+                                               DungeonManager.Instance.GridSizeY + TargetCoordinate.y];
     }
 
     public void Open()
     {
         doorCollider.SetActive(false);
-        doorState = DoorState.Opened;
         raycastBlocker.enabled = true;
+        wall.SetActive(false);
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        doorState = DoorState.Opened;
     }
 
     public void Close()
     {
         doorCollider.SetActive(true);
-        doorState = DoorState.Closed;
         raycastBlocker.enabled = false;
+        wall.SetActive(false);
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        doorState = DoorState.Closed;
     }
 
     public void Wall()
     {
         doorCollider.SetActive(false);
-        gameObject.GetComponent<SpriteRenderer>().enabled = false;
         wall.SetActive(true);
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
         doorState = DoorState.Walled;
     }
     // Going into a new room
