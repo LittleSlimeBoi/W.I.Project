@@ -24,11 +24,11 @@ public class DungeonManager : MonoBehaviour
     [SerializeField] private List<InteriiorList> roomTemplates;
 
     public static Room currentRoom;
-    public static Vector3 playerLastPos = new(-6, 0.5f, 0);
-    public static Vector2 mainCamLastMinPos = new(0.5f, 0.5f);
-    public static Vector2 mainCamLastMaxPos = new(0.5f, 0.5f);
-    public static float minimapCamLastX = 0.5f;
-    public static float minimapCamLastY = 0.5f;
+    public static Vector3 playerLastPos;
+    public static Vector2 mainCamLastMinPos;
+    public static Vector2 mainCamLastMaxPos;
+    public static float minimapCamLastX;
+    public static float minimapCamLastY;
 
     public Room endPlaceholder;
 
@@ -49,7 +49,13 @@ public class DungeonManager : MonoBehaviour
     {
         CreateDungeon();
         NewCurrentRoom(Dungeon[GridSizeX, GridSizeY]);
+        playerLastPos = new(0.5f, 0.5f, 0);
+        mainCamLastMinPos = new(0.5f, 0.5f);
+        mainCamLastMaxPos = new(0.5f, 0.5f);
+        minimapCamLastX = 0.5f;
+        minimapCamLastY = 0.5f;
     }
+
     public void NewCurrentRoom(Room room)
     {
         OpenCurrentRoom();
@@ -103,13 +109,17 @@ public class DungeonManager : MonoBehaviour
         }
         unavailableSpaces.Clear();
         occupiedSpaces.Clear();
+        roomsWithDistance.Clear();
+        maxDistance = 0;
     }
     public void CreateDungeon()
     {
         // Setup // Change this later
         LoadBackground();
         Dungeon = new Room[GridSizeX * 2 + 1, GridSizeY * 2 + 1];
-        PlaceRoomIntoScene(Room.RoomSize.Medium, 0, 0);
+        //PlaceRoomIntoScene(Room.RoomSize.Medium, 0, 0);
+        Room startRoom = Instantiate(roomPrefabs[0], dungeonTransform);
+        AddEndRoomToDungeon(startRoom, 0, 0, 1, 1, 0, 0);
         Dungeon[GridSizeX, GridSizeY].roomType = Room.RoomType.Starting;
         Dungeon[GridSizeX, GridSizeY].name = "Starting Room";
         currentRoom = Dungeon[GridSizeX, GridSizeY];
@@ -148,7 +158,7 @@ public class DungeonManager : MonoBehaviour
             else
             {
                 Room endRoom = Instantiate(endPlaceholder, dungeonTransform);
-                AddRoomToDungeon(endRoom, pos.x, pos.y, 1, 1, 0, 0);
+                AddEndRoomToDungeon(endRoom, pos.x, pos.y, 1, 1, 0, 0);
                 Dungeon[GridSizeX + pos.x, GridSizeY + pos.y].name = "End Room";
                 foreach (Vector2Int v in occupiedSpaces)
                 {
@@ -254,7 +264,28 @@ public class DungeonManager : MonoBehaviour
             roomTemplates[(int)newRoom.roomSize].templates[UnityEngine.Random.Range(0, roomTemplates[(int)newRoom.roomSize].templates.Count)]
         );
         Dungeon[x + GridSizeX, y + GridSizeY].SetMiniMapIcon();
+    }
 
+    private void AddEndRoomToDungeon(Room newRoom, int x, int y, int width, int height, float offsetX, float offsetY)
+    {
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                Dungeon[x + j + GridSizeX, y + i + GridSizeY] = newRoom;
+                occupiedSpaces.Add(new Vector2Int(x + j, y + i));
+                unavailableSpaces.Add(new Vector2Int(x + j, y + i));
+            }
+        }
+        Dungeon[x + GridSizeX, y + GridSizeY].transform.position = new Vector3((x + offsetX) * Room.baseWidth, (y + offsetY) * Room.baseHeight, 0);
+        Dungeon[x + GridSizeX, y + GridSizeY].GridPos = new Vector2Int(x, y);
+        Dungeon[x + GridSizeX, y + GridSizeY].name = $"{newRoom.roomSize} Room {x} {y}";
+        Dungeon[x + GridSizeX, y + GridSizeY].SetEnviroment(
+            enviromentName,
+            backgrounds[(int)newRoom.roomSize],
+            roomTemplates[(int)newRoom.roomSize].templates[0]
+        );
+        Dungeon[x + GridSizeX, y + GridSizeY].SetMiniMapIcon();
     }
 
     // Helper functions

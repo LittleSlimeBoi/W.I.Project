@@ -12,96 +12,108 @@ public class MonsterMovement : MonoBehaviour
     }
     [HideInInspector] public MonsterMoveState moveState;
     [SerializeField] private MonsterMoveState initMoveState;
-    [SerializeField] private Transform[] patrolPoints;
-    [SerializeField] private Vector2[] speeds; // x: speed, y: end frame
-    [SerializeField] private float defaultSpeed = 3f;
-    [SerializeField] private float rotateSpeed = 4f;
-    [SerializeField] private float viewAngle = 90f;
-    [SerializeField] private float viewDistance = 4f;
-    [SerializeField] private int rayCount = 5;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private PatrolPoint[] patrolPoints;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float rotateSpeed;
+    [SerializeField] private float viewAngle;
+    [SerializeField] private float viewDistance;
+    [SerializeField] private int rayCount;
     [SerializeField] private LayerMask layer;
     private RaycastHit2D[] hits = new RaycastHit2D[1];
     private int patrolIndex = 0;
     private Vector2 lastDirection;
     private Vector2 currentDirection;
     private float moveTime = 0f;
+    private float idleTime = 0f;
     private Animator animator;
-    private bool initState = true;
+    private bool newState = true;
 
     private void OnEnable()
     {
         moveState = initMoveState;
         patrolIndex = 0;
-        transform.position = patrolPoints[0].position;
-        lastDirection = (patrolPoints[0].position - transform.position).normalized;
+        transform.position = patrolPoints[0].transform.position;
+        lastDirection = (patrolPoints[0].transform.position - transform.position).normalized;
         animator = GetComponent<Animator>();
-        initState = true;
+        newState = true;
     }
 
     private void Update()
     {
-        if (moveTime > 100f) moveTime = 0;
-        moveTime += Time.deltaTime;
         switch (moveState)
         {
             case MonsterMoveState.Idle:
-                if (initState)
+                if (newState)
                 {
-                    initState = false;
+                    newState = false;
                     animator.SetBool("Idle", true);
+                    // Start animation from its begining
+                    animator.Play(animator.GetCurrentAnimatorStateInfo(0).fullPathHash, 0, 0);
                 }
+                Idle();
                 break;
             case MonsterMoveState.Patrol:
-                if (initState)
+                if (newState)
                 {
-                    initState = false;
+                    newState = false;
                     animator.SetBool("Idle", false);
+                    // Start animation from its begining
+                    animator.Play(animator.GetCurrentAnimatorStateInfo(0).fullPathHash, 0, 0);
                 }
                 Patrol();
                 break;
             case MonsterMoveState.Noticed:
-                if (initState)
+                if (newState)
                 {
-                    initState = false;
+                    newState = false;
                     //animator.SetBool("Idle", false);
                 }
                 break;
         }
     }
 
-    private float SpeedSyncWithAnimation()
+    private void FixedUpdate()
     {
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        float normalizedTime = stateInfo.normalizedTime % 1f;
-        float clipLengthInFrames = stateInfo.length * 60;
-        float currentFrame = normalizedTime * clipLengthInFrames;
+        VisionWithRaycast(currentDirection);
+    }
 
-        for (int i = 0; i < speeds.Length; i++)
+    private void Idle()
+    {
+        idleTime += Time.deltaTime;
+        if(idleTime >= patrolPoints[patrolIndex].stopTime)
         {
-            float phaseEndInFrames = speeds[i].y;
-            if (currentFrame <= phaseEndInFrames)
-            {
-                defaultSpeed = speeds[i].x;
-                break;
-            }
+            moveState = MonsterMoveState.Patrol;
+            newState = true;
+            idleTime = 0;
+            patrolIndex = (patrolIndex + 1) % patrolPoints.Length;
         }
-        return defaultSpeed;
     }
 
     private void Patrol()
     {
         if (patrolPoints.Length == 0) return;
+        if (moveTime > 100f) moveTime = 0;
+        moveTime += Time.deltaTime;
 
-        Transform targetPos = patrolPoints[patrolIndex];
+        Transform targetPos = patrolPoints[patrolIndex].transform;
         Vector2 direction = ((Vector2)targetPos.position - (Vector2)transform.position).normalized;
-        GetComponent<SpriteRenderer>().flipX = direction.x < -0.001f;
+        // Set sprite flip on the first frame if it's starting with idle
+        if (moveTime > Time.deltaTime) spriteRenderer.flipX = direction.x < -0.001f;
 
-        transform.position = Vector2.MoveTowards(transform.position, targetPos.position, SpeedSyncWithAnimation() * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, targetPos.position, moveSpeed * Time.deltaTime);
 
         if (Vector2.Distance(transform.position, targetPos.position) < 0.1f)
         {
-            patrolIndex = (patrolIndex + 1) % patrolPoints.Length;
             moveTime = 0f;
+            if (patrolPoints[patrolIndex].stopping)
+            {
+                moveState = MonsterMoveState.Idle;
+                newState = true;
+                idleTime = 0;
+                return;
+            }
+            else patrolIndex = (patrolIndex + 1) % patrolPoints.Length;
         }
 
         // Smooth rotation
@@ -113,8 +125,6 @@ public class MonsterMovement : MonoBehaviour
         {
             lastDirection = direction;
         }
-        
-        VisionWithRaycast(currentDirection);
     }
 
     private void VisionWithRaycast(Vector2 direction)
