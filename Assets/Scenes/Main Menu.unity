@@ -949,8 +949,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1650245620}
-        m_TargetAssemblyTypeName: LevelLoader, Assembly-CSharp
+      - m_Target: {fileID: 1157878344}
+        m_TargetAssemblyTypeName: LevelLoaderNonSingleton, Assembly-CSharp
         m_MethodName: QuitGame
         m_Mode: 1
         m_Arguments:
@@ -1080,17 +1080,6 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 7458999697691879032, guid: f1df368cfdd0b2649b6cd0d69a34df68, type: 3}
   m_PrefabInstance: {fileID: 2109609574}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1650245620 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -2191382369579517410, guid: f1df368cfdd0b2649b6cd0d69a34df68, type: 3}
-  m_PrefabInstance: {fileID: 2109609574}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ecf22a2e49b5ed45aa0ed6c9050f182, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1808693421
 GameObject:
   m_ObjectHideFlags: 0

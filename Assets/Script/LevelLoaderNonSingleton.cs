@@ -11,4 +11,9 @@ public class LevelLoaderNonSingleton : MonoBehaviour
     {
         LevelLoader.Instance.LoadDungeonScene();
     }
+
+    public void QuitGame()
+    {
+        LevelLoader.Instance.QuitGame();
+    }
 }
