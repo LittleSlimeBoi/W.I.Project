@@ -63,7 +63,7 @@ public class CombatManager : MonoBehaviour
 
     public void DebugWin()
     {
-        DungeonManager.currentRoom.roomState = Room.RoomState.Complete;
+        DungeonManager.currentRoom.roomState = RoomState.Complete;
         LevelLoader.Instance.LoadDungeonScene();
     }
 
@@ -92,7 +92,7 @@ public class CombatManager : MonoBehaviour
         if(enemySpawner.NoMoreMonster() && !enemySpawner.WaitingToSpawn())
         {
             // Load win scene
-            DungeonManager.currentRoom.roomState = Room.RoomState.Complete;
+            DungeonManager.currentRoom.roomState = RoomState.Complete;
             LevelLoader.Instance.LoadDungeonScene();
         }
         else
@@ -116,7 +116,7 @@ public class CombatManager : MonoBehaviour
         // Monster turn
         if(enemySpawner.NoMoreMonster() && enemySpawner.WaitingToSpawn())
         {
-            enemySpawner.SpawnMonster(4);
+            enemySpawner.SpawnMonsterAtRandom(4);
         }
         enemySpawner.AllMonstersAction();
         // Update tile
@@ -137,7 +137,7 @@ public class CombatManager : MonoBehaviour
                 // If attacks single target
                 if (!dropZone.card.info.isAOE)
                 {
-                    if (enemyGrid.grid[enemyGrid.selectedX, enemyGrid.selectedY].Occupied)
+                    if (enemyGrid.grid[enemyGrid.selectedX, enemyGrid.selectedY].IsOccupied)
                     {
                         for(int i = 1; i < enemySpawner.transform.childCount; i++)
                         {
@@ -161,12 +161,12 @@ public class CombatManager : MonoBehaviour
                 {
                     foreach(GridTile tile in enemyGrid.grid)
                     {
-                        if(tile.Selectable && tile.Occupied)
+                        if(tile.IsSelectable && tile.IsOccupied)
                         {
                             for (int i = 1; i < enemySpawner.transform.childCount; i++)
                             {
                                 MonsterCombatManager temp = enemySpawner.transform.GetChild(i).GetComponent<MonsterCombatManager>();
-                                if (temp.Position == tile.tileIndex)
+                                if (temp.Position == tile.TileIndex)
                                 {
                                     temp.TakeDamge(dropZone.card.info.atkPower + player.bonusAtk);
 
