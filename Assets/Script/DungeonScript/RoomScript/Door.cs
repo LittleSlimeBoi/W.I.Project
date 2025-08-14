@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Door : MonoBehaviour
@@ -19,8 +20,9 @@ public class Door : MonoBehaviour
     public DoorState doorState;
     public DoorDirection doorDirection;
     public DoorType doorType;
-    [SerializeField] protected GameObject doorCollider;
-    [SerializeField] protected GameObject wall;
+    [SerializeField] protected Animator doorCollider;
+    [SerializeField] protected SpriteRenderer doorFrame;
+    [SerializeField] protected SpriteRenderer wall;
     [SerializeField] protected BoxCollider2D raycastBlocker;
 
     protected float entryOffset = 2.75f;
@@ -37,27 +39,27 @@ public class Door : MonoBehaviour
 
     public void Open()
     {
-        doorCollider.SetActive(false);
+        doorCollider.SetBool("Open", true);
         raycastBlocker.enabled = true;
-        wall.SetActive(false);
-        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        wall.gameObject.SetActive(false);
+        doorFrame.enabled = true;
         doorState = DoorState.Opened;
     }
 
     public void Close()
     {
-        doorCollider.SetActive(true);
+        doorCollider.SetBool("Open", false);
         raycastBlocker.enabled = false;
-        wall.SetActive(false);
-        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        wall.gameObject.SetActive(false);
+        doorFrame.enabled = true;
         doorState = DoorState.Closed;
     }
 
     public void Wall()
     {
-        doorCollider.SetActive(false);
-        wall.SetActive(true);
-        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        doorCollider.gameObject.SetActive(false);
+        wall.gameObject.SetActive(true);
+        doorFrame.enabled = false;
         doorState = DoorState.Walled;
     }
     // Going into a new room
@@ -75,45 +77,54 @@ public class Door : MonoBehaviour
 
     public void SetDoorSprite(string enviromentName, DoorType doorType = DoorType.None)
     {
-        SetChildSprite(wall, "", "_Wall", enviromentName, doorType);
-        SetChildSprite(doorCollider, "_Closed", "_Door", enviromentName, doorType);
-        SetChildSprite(gameObject, "_Opened", "_Door", enviromentName, doorType);
+        SetWallSprite(enviromentName);
+        SetFrameSprite(enviromentName, doorType);
+        SetDoorAnimation(enviromentName, doorType);
     }
-    public void SetChildSprite(GameObject child, string _prefix, string _child, string enviromentName, DoorType doorType)
+    public void SetWallSprite(string enviromentName)
     {
-        string enviromentVar = "";
-        string path = "";
-        switch (doorType)
-        {
-            case DoorType.None: 
-                enviromentVar = enviromentName;
-                path = "Sprite/Enviroment Sprite/" + enviromentName + "/" + enviromentVar + _child;
-                break;
-            case DoorType.Treasure:
-                enviromentVar = doorType.ToString() + " Room";
-                path = "Sprite/Enviroment Sprite/" + enviromentVar + "/" + enviromentVar + _child;
-                break;
-            case DoorType.Boss:
-                enviromentVar = doorType.ToString() + " Room";
-                path = "Sprite/Enviroment Sprite/" + enviromentVar + "/" + enviromentVar + _child;
-                break;
-            case DoorType.Secret:
-                enviromentVar = enviromentName + " " + doorType.ToString();
-                path = "Sprite/Enviroment Sprite/" + enviromentName + "/" + enviromentVar + _child;
-                break;
-        }
+        string path = "Stage Recources/" + enviromentName + "/" + enviromentName + "_Wall";
         Sprite[] sprites = Resources.LoadAll<Sprite>(path);
-        SelectSprite(child, enviromentVar + _prefix + _child + "_" + doorDirection.ToString(), sprites);
-    }
-    protected void SelectSprite(GameObject obj, string name, Sprite[] sprites)
-    {
+        string spritename = enviromentName + "_Wall_" + doorDirection.ToString();
         foreach (Sprite sprite in sprites)
         {
-            if (sprite.name == name)
+            if (sprite.name == spritename)
             {
-                obj.GetComponent<SpriteRenderer>().sprite = sprite;
+                wall.sprite = sprite;
             }
         }
+    }
+    public void SetFrameSprite(string enviromentName, DoorType type)
+    {
+        string path;
+        // Insert a switch case here
+        path = "Stage Recources/" + enviromentName + "/" + enviromentName + "_Frame";
+
+        doorFrame.sprite = Resources.Load<Sprite>(path);
+    }
+    public void SetDoorAnimation(string enviromentName, DoorType type)
+    {
+        string path;
+        // Insert a switch case here
+        path = "Stage Recources/" + enviromentName;
+
+        // Load animation clips
+        AnimationClip switchAnim = Resources.Load<AnimationClip>(path + "/Door Switch");
+
+        AnimatorOverrideController aoc = new AnimatorOverrideController(doorCollider.runtimeAnimatorController);
+        var overrides = new List<KeyValuePair<AnimationClip, AnimationClip>>();
+        aoc.GetOverrides(overrides);
+        for (int i = 0; i < overrides.Count; i++)
+        {
+            if (overrides[i].Key.name == "Closed" || overrides[i].Key.name == "Open")
+            {
+                overrides[i] = new KeyValuePair<AnimationClip, AnimationClip>(overrides[i].Key, switchAnim);
+                continue;
+            }
+            // Overide more animation clip here
+        }
+        aoc.ApplyOverrides(overrides);
+        doorCollider.runtimeAnimatorController = aoc;
     }
 
     protected Vector2 GetTargetPosition(Vector3 targetPos, float offset)

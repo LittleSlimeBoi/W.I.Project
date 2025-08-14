@@ -10,7 +10,7 @@ public class InteriorTemplate : MonoBehaviour
 
     public void RenderInterior(string enviromentName)
     {
-        interiorSprites = Resources.Load<InteriorSprites>("Sprite/Enviroment Sprite/" + enviromentName + "/" + enviromentName);
+        interiorSprites = Resources.Load<InteriorSprites>("Stage Recources/" + enviromentName + "/" + enviromentName);
         int localSpriteCount = interiorSprites.localObstacleSprites.Count;
         int localAnimationCount = interiorSprites.localObstacleAnimation.Count;
         int localTotalCount = localAnimationCount + localSpriteCount;

@@ -123,7 +123,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Grass Field_Closed_Door_Top
+      name: Grass Field_Door_0
       rect:
         serializedVersion: 2
         x: 0
@@ -137,18 +137,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 239d9a8db61f17d4d947d30c12c1de45
-      internalID: 191956113
+      spriteID: 6164d319933eb934fb61cb04468729a9
+      internalID: 2042898576
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass Field_Closed_Door_Bottom
+      name: Grass Field_Door_1
       rect:
         serializedVersion: 2
         x: 0
-        y: 48
+        y: 32
         width: 48
         height: 16
       alignment: 0
@@ -158,20 +158,41 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b8b61c15898de5e43a42af1c0fd06b24
-      internalID: -130697064
+      spriteID: edba23cdac09c5e4fb24b8e4c19442e4
+      internalID: -135576613
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Grass Field_Closed_Door_Left
+      name: Grass Field_Door_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 16
+        width: 48
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c3e6373b79840f84b9efd1a2d410d137
+      internalID: -303526471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Grass Field_Door_3
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
-        height: 48
+        width: 48
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,29 +200,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e4beaab88a5f45140a67af009cd7a80e
-      internalID: -1294812441
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Grass Field_Closed_Door_Right
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 0
-        width: 16
-        height: 48
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3561e26bcbeda414e9574cab225af3d4
-      internalID: 871502335
+      spriteID: 9b5a256958773414b88c33d4bd2345be
+      internalID: 455277364
       vertices: []
       indices: 
       edges: []
@@ -217,10 +217,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Grass Field_Closed_Door_Bottom: -130697064
-      Grass Field_Closed_Door_Left: -1294812441
-      Grass Field_Closed_Door_Right: 871502335
-      Grass Field_Closed_Door_Top: 191956113
+      Grass Field_Door_0: 2042898576
+      Grass Field_Door_1: -135576613
+      Grass Field_Door_2: -303526471
+      Grass Field_Door_3: 455277364
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
