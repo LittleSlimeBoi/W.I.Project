@@ -1,28 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    public static Board Instance { get; private set; }
-
+    [SerializeField] private HandPanel handPanel;
     public List<CardInfo> deck = new();
     [HideInInspector] public List<CardInfo> drawPile = new();
     [HideInInspector] public List<CardInfo> discardPile = new();
     [HideInInspector] public List<CardInfo> hand = new();
     [HideInInspector] public int handSize = 7;
-
-    private void Awake()
-    {
-        if(Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
 
     // Add card to deck as reward/ Add temporary card to draw pile and discard pile
     public void AddCard(List<CardInfo> list, CardInfo card, int amount = 1)
@@ -81,7 +67,7 @@ public class Board : MonoBehaviour
         }
         else
         {
-            amount -= drawPile.Count;
+            int leftover = amount - drawPile.Count;
 
             hand.AddRange(drawPile);
             drawPile.Clear();
@@ -89,14 +75,21 @@ public class Board : MonoBehaviour
             Refill();
             Shuffle();
 
-            hand.AddRange(drawPile.GetRange(0, amount));
-            drawPile.RemoveRange(0, amount);
+            hand.AddRange(drawPile.GetRange(0, leftover));
+            drawPile.RemoveRange(0, leftover);
+        }
+
+        handPanel.blocker.gameObject.SetActive(true);
+        for (int i = hand.Count - amount; i < hand.Count; i++)
+        {
+            handPanel.Display(i, hand);
         }
     }
 
     // Discard when played
     public void Discard(int index)
     {
+        handPanel.Play(index);
         discardPile.Add(hand[index]);
         hand.RemoveAt(index);
     }
@@ -106,6 +99,7 @@ public class Board : MonoBehaviour
     {
         discardPile.AddRange(hand);
         hand.Clear();
+        handPanel.FlushHand();
     }
 
 }

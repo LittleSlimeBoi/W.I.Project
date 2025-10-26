@@ -37,12 +37,7 @@ public class CombatManager : MonoBehaviour
         board.InitBoard();
         handPanel.FlushHand();
 
-        board.DrawCard(5);
-        for (int i = 0; i < board.hand.Count; i++)
-        {
-            handPanel.Display(i);
-        }
-
+        NewTurn();
     }
 
     /*
@@ -73,7 +68,6 @@ public class CombatManager : MonoBehaviour
         endturnButton.interactable = false;
         // Clear hand
         board.Flush();
-        handPanel.FlushHand();
 
         // Player take damage
         player.TakeDamge(playerGrid.grid[player.GetPosX(), player.GetPosY()].DamageIncoming);
@@ -105,14 +99,10 @@ public class CombatManager : MonoBehaviour
     {
         if (turn != 0) enemySpawner.AllMonstersCancelAttack();
         turn++;
-        // Refill player's mana
+
         player.RefillMana();
-        // Draw 5 cards
+
         board.DrawCard(5);
-        for (int i = 0; i < board.hand.Count; i++)
-        {
-            handPanel.Display(i);
-        }
         // Monster turn
         if(enemySpawner.NoMoreMonster() && enemySpawner.WaitingToSpawn())
         {
@@ -195,7 +185,6 @@ public class CombatManager : MonoBehaviour
 
             // Refresh tile and grid + remove card from hand + add to discard pile
             dropZone.ReturnCardToHand();
-            handPanel.Play(handIndex);
             board.Discard(handIndex);
         }
     }

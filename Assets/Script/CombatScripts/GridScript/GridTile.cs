@@ -8,7 +8,7 @@ public class GridTile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     [SerializeField] private Color baseColor, offsetColor;
     [SerializeField] protected Image tileImage;
     [SerializeField] private GameObject selectHighlight;
-    [SerializeField] private GameObject targetHighlight;
+    [SerializeField] private Animator targetHighlight;
     [SerializeField] private GameObject fragileHighlight;
     [SerializeField] private GameObject anchorHighlight;
     [SerializeField] private GameObject darkenHighlight;
@@ -59,12 +59,20 @@ public class GridTile : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void UpdateTileOnNewTurn()
     {
         blockHighlight.SetActive(!IsWalkable);
-        targetHighlight.SetActive(Targeted > 0);
+        if (Targeted > 0)
+        {
+            targetHighlight.gameObject.SetActive(true); 
+            targetHighlight.Play(targetHighlight.GetCurrentAnimatorStateInfo(0).fullPathHash, 0, 0);
+        }
+        else
+        {
+            targetHighlight.gameObject.SetActive(false);
+        }
     }
 
     public void UpdateTileOnCharacterDeath()
     {
-        targetHighlight.SetActive(Targeted > 0);
+        targetHighlight.gameObject.SetActive(Targeted > 0);
     }
 
     public void UpdateTileOnCardPlay(bool enable)

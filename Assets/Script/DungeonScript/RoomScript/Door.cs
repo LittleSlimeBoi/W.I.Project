@@ -152,10 +152,10 @@ public class Door : MonoBehaviour
         Vector3 camStartPos = new(MainCamController.Instance.TransitionX, MainCamController.Instance.TransitionY, Camera.main.transform.position.z);
         ClampCamera.SetCameraBound();
         float camTargetX = (doorDirection == DoorDirection.Left || doorDirection == DoorDirection.Right 
-            ? camStartPos.x + (doorDirection == DoorDirection.Left ? -1 : 1) * Room.baseWidth 
+            ? camStartPos.x + (doorDirection == DoorDirection.Left ? -1 : 1) * Room.BASE_WIDTH 
             : MainCamController.Instance.TransitionX);
         float camTargetY = (doorDirection == DoorDirection.Top || doorDirection == DoorDirection.Bottom 
-            ? camStartPos.y + (doorDirection == DoorDirection.Bottom ? -1 : 1) * Room.baseHeight 
+            ? camStartPos.y + (doorDirection == DoorDirection.Bottom ? -1 : 1) * Room.BASE_HEIGHT 
             : MainCamController.Instance.TransitionY);
         Vector3 camTargetPos = new(camTargetX, camTargetY, camStartPos.z);
 

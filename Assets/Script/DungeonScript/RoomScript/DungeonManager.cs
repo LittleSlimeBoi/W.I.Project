@@ -254,7 +254,7 @@ public class DungeonManager : MonoBehaviour
                 unavailableSpaces.Add(new Vector2Int(x + j, y + i));
             }
         }
-        Dungeon[x + GridSizeX, y + GridSizeY].transform.position = new Vector3((x + offsetX) * Room.baseWidth, (y + offsetY) * Room.baseHeight, 0);
+        Dungeon[x + GridSizeX, y + GridSizeY].transform.position = new Vector3((x + offsetX) * Room.BASE_WIDTH, (y + offsetY) * Room.BASE_HEIGHT, 0);
         Dungeon[x + GridSizeX, y + GridSizeY].GridPos = new Vector2Int(x, y);
         Dungeon[x + GridSizeX, y + GridSizeY].name = $"{newRoom.roomSize} Room {x} {y}";
         Dungeon[x + GridSizeX, y + GridSizeY].SetEnviroment(
@@ -276,7 +276,7 @@ public class DungeonManager : MonoBehaviour
                 unavailableSpaces.Add(new Vector2Int(x + j, y + i));
             }
         }
-        Dungeon[x + GridSizeX, y + GridSizeY].transform.position = new Vector3((x + offsetX) * Room.baseWidth, (y + offsetY) * Room.baseHeight, 0);
+        Dungeon[x + GridSizeX, y + GridSizeY].transform.position = new Vector3((x + offsetX) * Room.BASE_WIDTH, (y + offsetY) * Room.BASE_HEIGHT, 0);
         Dungeon[x + GridSizeX, y + GridSizeY].GridPos = new Vector2Int(x, y);
         Dungeon[x + GridSizeX, y + GridSizeY].name = $"{newRoom.roomSize} Room {x} {y}";
         Dungeon[x + GridSizeX, y + GridSizeY].SetEnviroment(

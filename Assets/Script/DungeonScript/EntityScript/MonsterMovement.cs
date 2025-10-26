@@ -2,12 +2,6 @@ using UnityEngine;
 
 public class MonsterMovement : MonoBehaviour
 {
-    public enum MonsterMoveState
-    {
-        Patrol,
-        Noticed,
-        Idle
-    }
     [HideInInspector] public MonsterMoveState moveState;
     [SerializeField] private MonsterMoveState initMoveState;
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -61,7 +55,7 @@ public class MonsterMovement : MonoBehaviour
                 }
                 Patrol();
                 break;
-            case MonsterMoveState.Noticed:
+            case MonsterMoveState.Pursuit:
                 if (newState)
                 {
                     newState = false;
@@ -73,7 +67,7 @@ public class MonsterMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        VisionWithRaycast(currentDirection);
+        if (moveState != MonsterMoveState.Pursuit) VisionWithRaycast(currentDirection);
     }
 
     private void Idle()
@@ -149,6 +143,7 @@ public class MonsterMovement : MonoBehaviour
                     {
                         // Do something when the player is detected
                         DungeonManager.Instance.CloseCurrentRoom();
+                        moveState = MonsterMoveState.Pursuit;
                     }
                 }
             }
@@ -156,4 +151,10 @@ public class MonsterMovement : MonoBehaviour
             Debug.DrawRay(transform.position, angleDirection * viewDistance, hitSomething ? Color.red : Color.green);
         }
     }
+}
+public enum MonsterMoveState
+{
+    Patrol,
+    Pursuit,
+    Idle
 }

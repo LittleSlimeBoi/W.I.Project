@@ -321,12 +321,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileName: 
-  tileIndex: 0
   baseColor: {r: 0, g: 0.5547452, b: 1, a: 1}
   offsetColor: {r: 0.1137255, g: 0.7137255, b: 1, a: 1}
   tileImage: {fileID: 8435450185125850081}
   selectHighlight: {fileID: 7908516746181880145}
-  targetHighlight: {fileID: 1243388451641039799}
+  targetHighlight: {fileID: 8356164926450999469}
   fragileHighlight: {fileID: 2819042409782885114}
   anchorHighlight: {fileID: 8167652203598479399}
   darkenHighlight: {fileID: 6290407780517577394}
@@ -686,13 +685,13 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0c6d771e31a32c34f9c95276d49361f1, type: 3}
---- !u!1 &1243388451641039799 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7021207251532916930, guid: 0c6d771e31a32c34f9c95276d49361f1, type: 3}
-  m_PrefabInstance: {fileID: 8084297773566342005}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3501376332285470352 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4658501879300543973, guid: 0c6d771e31a32c34f9c95276d49361f1, type: 3}
+  m_PrefabInstance: {fileID: 8084297773566342005}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8356164926450999469 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 271973290729771992, guid: 0c6d771e31a32c34f9c95276d49361f1, type: 3}
   m_PrefabInstance: {fileID: 8084297773566342005}
   m_PrefabAsset: {fileID: 0}

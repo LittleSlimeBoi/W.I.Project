@@ -6,15 +6,16 @@ public class Room : MonoBehaviour, IClampCamera
     public RoomSize roomSize;
     public RoomType roomType;
     public RoomState roomState;
-    
-    public static readonly int baseWidth = 19;
-    public static readonly int baseHeight = 11;
+
+    public static readonly int BASE_WIDTH = 19;
+    public static readonly int BASE_HEIGHT = 11;
 
     public Vector2Int GridPos { get; set; }
     public int PosX { get { return GridPos.x; } }
     public int PosY { get { return GridPos.y; } }
     public int Distance { get; private set; } = 999;
     public bool Calculated { get; private set; } = false;
+    public int[,] RoomArea { get; private set; }
 
     private string enviromentName;
     private Grid background;
@@ -102,11 +103,15 @@ public class Room : MonoBehaviour, IClampCamera
         if(roomTemplatePrefab != null )
         {
             roomInteriorTemplate = Instantiate(roomTemplatePrefab, transform);
+            roomInteriorTemplate.transform.localPosition = new Vector3(0.5f, 0.5f, 0) - GetChildLocalOffset(roomSize);
             roomInteriorTemplate.RenderInterior(enviroment);
         }
 
         // Set door sprite
         SetDoorEnviroment(enviroment);
+
+        // Init room area
+        RoomArea = roomInteriorTemplate.InitRoomArea(GetRoomWidth(), GetRoomHeight());
     }
 
     public void SetDoorEnviroment(string enviroment)
@@ -221,6 +226,27 @@ public class Room : MonoBehaviour, IClampCamera
             case RoomSize.BigVertical: MainCamController.Instance.SetBounds(x + 0.5f, x + 0.5f, y - 5, y + 6); break;
             case RoomSize.ExtraBig: MainCamController.Instance.SetBounds(x - 9, x + 10, y - 5, y + 6); break;
             default: MainCamController.Instance.SetBounds(x + 0.5f, x + 0.5f, y + 0.5f, y + 0.5f); break;
+        }
+    }
+
+    public int GetRoomWidth()
+    {
+        switch (roomSize)
+        {
+            case RoomSize.SmallVertical: return 11;
+            case RoomSize.BigHorizontal: return 34;
+            case RoomSize.ExtraBig: return 34;
+            default: return 15;
+        }
+    }
+    public int GetRoomHeight()
+    {
+        switch (roomSize)
+        {
+            case RoomSize.SmallHorizontal: return 5;
+            case RoomSize.BigVertical: return 18;
+            case RoomSize.ExtraBig: return 18;
+            default: return 7;
         }
     }
 }

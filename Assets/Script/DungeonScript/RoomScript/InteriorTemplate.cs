@@ -36,6 +36,24 @@ public class InteriorTemplate : MonoBehaviour
                 o.SetShadow(shadow);
             }
         }
-        
+    }
+
+    // Again 2d array being fucky wucky
+    public int[,] InitRoomArea(int width, int height)
+    {
+        int[,] area = new int[height, width];
+        foreach (Obstacle rock in rocks)
+        {
+            int x = width / 2 + (int)rock.transform.localPosition.x;
+            int y = height / 2 - (int)rock.transform.localPosition.y;
+            area[y, x] = -1;
+        }
+        foreach (Obstacle obstacle in local)
+        {
+            int x = width / 2 + (int)obstacle.transform.localPosition.x;
+            int y = height / 2 - (int)obstacle.transform.localPosition.y;
+            area[y, x] = -1;
+        }
+        return area;
     }
 }
