@@ -118,7 +118,7 @@ GameObject:
   - component: {fileID: 1368185910009612660}
   - component: {fileID: 1870008401433990120}
   m_Layer: 7
-  m_Name: Empty Obstacle
+  m_Name: Obs Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1600ddc276ddffe4cbe118e90f088207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 1
   mainSprite: {fileID: 2329960726686117717}
   shadow: {fileID: 1484461436312425031}
   animator: {fileID: 1503764759442948903}

@@ -7,6 +7,7 @@ public class InteriorTemplate : MonoBehaviour
     public List<Obstacle> local;
     public List<CombatInfo> monsters = new();
     private InteriorSprites interiorSprites;
+    private HashSet<MonsterMoveType> distanceMapTypes;
 
     public void RenderInterior(string enviromentName)
     {
@@ -39,21 +40,40 @@ public class InteriorTemplate : MonoBehaviour
     }
 
     // Again 2d array being fucky wucky
-    public int[,] InitRoomArea(int width, int height)
+    public ObstacleType[,] InitRoomGrid(int width, int height)
     {
-        int[,] area = new int[height, width];
+        ObstacleType[,] area = new ObstacleType[height, width];
         foreach (Obstacle rock in rocks)
         {
-            int x = width / 2 + (int)rock.transform.localPosition.x;
+            int x = (width - 1) / 2 + (int)rock.transform.localPosition.x;
             int y = height / 2 - (int)rock.transform.localPosition.y;
-            area[y, x] = -1;
+            area[y, x] = rock.type;
         }
         foreach (Obstacle obstacle in local)
         {
-            int x = width / 2 + (int)obstacle.transform.localPosition.x;
+            int x = (width - 1) / 2 + (int)obstacle.transform.localPosition.x;
             int y = height / 2 - (int)obstacle.transform.localPosition.y;
-            area[y, x] = -1;
+            area[y, x] = obstacle.type;
         }
         return area;
+    }
+
+    public HashSet<MonsterMoveType> PossibleMoveType()
+    {
+        if (distanceMapTypes != null) return distanceMapTypes;
+
+        distanceMapTypes = new();
+        foreach (var monster in monsters)
+        {
+            MonsterMoveType moveTypes = monster.GetComponent<MonsterMovementManager>().MoveTypes;
+            foreach (MonsterMoveType movetype in System.Enum.GetValues(typeof(MonsterMoveType)))
+            {
+                if ((moveTypes & movetype) != 0)
+                    distanceMapTypes.Add(movetype);
+            }
+        }
+        distanceMapTypes.Add(MonsterMoveType.Walking);
+
+        return distanceMapTypes;
     }
 }

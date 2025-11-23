@@ -9,6 +9,6 @@ public class MonsterInfo : ScriptableObject
     public Sprite monsterIcon;
     public Sprite monsterDes;
     public int moveRange;
-    public MonsterBehavior behavior;
+    public MonsterCombatAction behavior;
     public RuntimeAnimatorController controller;
 }

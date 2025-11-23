@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Bat Behavior", menuName = "Scriptable Object/Monster/Behavior/Bat")]
-public class BatBehavior : MonsterBehavior
+[CreateAssetMenu(fileName = "Bat Behavior", menuName = "Scriptable Object/Monster/Combat Action/Bat")]
+public class BatCombatAction : MonsterCombatAction
 {
     public override void Attack(int x, int y, GridMap otherSide, List<GridTile> atkArea, int damage)
     {

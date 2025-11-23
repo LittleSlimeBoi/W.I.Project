@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,15 +8,17 @@ public class Room : MonoBehaviour, IClampCamera
     public RoomType roomType;
     public RoomState roomState;
 
-    public static readonly int BASE_WIDTH = 19;
-    public static readonly int BASE_HEIGHT = 11;
+    public const int BASE_WIDTH = 19;
+    public const int BASE_HEIGHT = 11;
+    public const int MAX_DISTANCE = 999;
 
     public Vector2Int GridPos { get; set; }
     public int PosX { get { return GridPos.x; } }
     public int PosY { get { return GridPos.y; } }
-    public int Distance { get; private set; } = 999;
+    public int Distance { get; private set; } = MAX_DISTANCE;
     public bool Calculated { get; private set; } = false;
-    public int[,] RoomArea { get; private set; }
+    public ObstacleType[,] RoomGrid { get; private set; }
+    public Dictionary<MonsterMoveType, int[,]> DistanceMap { get; set; } = new();
 
     private string enviromentName;
     private Grid background;
@@ -23,6 +26,50 @@ public class Room : MonoBehaviour, IClampCamera
     public List<Door> activeDoors = new();
     [SerializeField] private List<Door> doors; // index from bottom up, left to right
     [SerializeField] private MiniMapIcon minimapIcon;
+
+    public void UpdateDistanceMap(Vector2Int playerPosInGrid)
+    {
+        foreach (MonsterMoveType movetype in roomInteriorTemplate.PossibleMoveType())
+        {
+            UpdateDistanceMapOfType(movetype, playerPosInGrid);
+        }
+    }
+    public void UpdateDistanceMapOfType(MonsterMoveType moveType, Vector2Int playerPosInGrid) 
+    {
+        ResetDistanceMapValue(moveType);
+        Queue<Vector2Int> q = new();
+        q.Enqueue(playerPosInGrid);
+        DistanceMap[moveType][playerPosInGrid.y, playerPosInGrid.x] = 0;
+        Vector2Int[] dirs = { Vector2Int.left, Vector2Int.right, Vector2Int.up, Vector2Int.down, };
+
+        while (q.Count > 0)
+        {
+            Vector2Int pos = q.Dequeue();
+            foreach (Vector2Int dir in dirs)
+            {
+                Vector2Int next = pos + dir;
+                if (next.x < 0 || next.y < 0 || next.x >= GetRoomWidth() || next.y >= GetRoomHeight()) continue;
+                if (DistanceMap[moveType][next.y, next.x] != MAX_DISTANCE) continue;
+                if (!MonsterMovementBehavior.CanTraverse(RoomGrid[next.y, next.x], moveType)) continue;
+
+                DistanceMap[moveType][next.y, next.x] = DistanceMap[moveType][pos.y, pos.x] + 1;
+                q.Enqueue(next);
+            }
+        }
+    }
+
+    public void OnRoomEnter()
+    {
+        DiscoverNewRoom();
+        HighlightCurrentRoom();
+        ActivateMonster();
+        PlayerDungeonManager.Instance.transform.parent = roomInteriorTemplate.transform;
+    }
+    public void OnRoomExit()
+    {
+        HighlightKnownRoom();
+        DeactivateMonster();
+    }
 
     public void SetDistance(int dis)
     {
@@ -111,7 +158,12 @@ public class Room : MonoBehaviour, IClampCamera
         SetDoorEnviroment(enviroment);
 
         // Init room area
-        RoomArea = roomInteriorTemplate.InitRoomArea(GetRoomWidth(), GetRoomHeight());
+        RoomGrid = roomInteriorTemplate.InitRoomGrid(GetRoomWidth(), GetRoomHeight());
+        foreach (MonsterMoveType movetype in roomInteriorTemplate.PossibleMoveType())
+        {
+            DistanceMap[movetype] = new int[GetRoomHeight(), GetRoomWidth()];
+            ResetDistanceMapValue(movetype);
+        }
     }
 
     public void SetDoorEnviroment(string enviroment)
@@ -229,6 +281,16 @@ public class Room : MonoBehaviour, IClampCamera
         }
     }
 
+    private void ResetDistanceMapValue(MonsterMoveType movetype)
+    {
+        for (int i = 0; i < GetRoomHeight(); i++)
+        {
+            for (int j = 0; j < GetRoomWidth(); j++)
+            {
+                DistanceMap[movetype][i, j] = MAX_DISTANCE;
+            }
+        }
+    }
     public int GetRoomWidth()
     {
         switch (roomSize)

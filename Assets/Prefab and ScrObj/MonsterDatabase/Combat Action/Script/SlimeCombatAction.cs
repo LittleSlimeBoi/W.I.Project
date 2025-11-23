@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Slime Behavior", menuName = "Scriptable Object/Monster/Behavior/Slime")]
-public class SlimeBehavior : MonsterBehavior
+[CreateAssetMenu(fileName = "Slime Behavior", menuName = "Scriptable Object/Monster/Combat Action/Slime")]
+public class SlimeCombatAction : MonsterCombatAction
 {
     public override void Attack(int x, int y, GridMap otherSide, List<GridTile> atkArea, int damage)
     {

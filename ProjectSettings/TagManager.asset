@@ -45,9 +45,12 @@ TagManager:
   - name: Floor
     uniqueID: 2420006999
     locked: 0
-  - name: Foreground
+  - name: OnFloor
     uniqueID: 2880703177
     locked: 0
   - name: Character
     uniqueID: 2634051251
+    locked: 0
+  - name: VFX
+    uniqueID: 1794247251
     locked: 0

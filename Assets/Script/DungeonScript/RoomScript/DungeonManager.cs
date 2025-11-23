@@ -57,13 +57,9 @@ public class DungeonManager : MonoBehaviour
 
     public void NewCurrentRoom(Room room)
     {
-        OpenCurrentRoom();
-        currentRoom.HighlightKnownRoom();
-        currentRoom.DeactivateMonster();
+        currentRoom.OnRoomExit();
         currentRoom = room;
-        currentRoom.DiscoverNewRoom();
-        currentRoom.HighlightCurrentRoom();
-        currentRoom.ActivateMonster();
+        currentRoom.OnRoomEnter();
     }
 
     public void OnLoadDungeon()

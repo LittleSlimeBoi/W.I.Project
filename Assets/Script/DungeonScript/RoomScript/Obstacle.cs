@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour
 {
+    public ObstacleType type;
     [SerializeField] private SpriteRenderer mainSprite;
     //[SerializeField] private SpriteRenderer destroyedSprite;
     [SerializeField] private SpriteRenderer shadow;
@@ -41,4 +42,8 @@ public class Obstacle : MonoBehaviour
             }
         }
     }
+}
+public enum ObstacleType
+{
+    None, Wall, Water, Pit, Floor
 }
